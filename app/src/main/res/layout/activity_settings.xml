@@ -4,109 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:theme="@style/Theme.PlaylistMaker">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="0dp"
         android:paddingBottom="28dp"
-        android:textAllCaps="false">
+        android:textAllCaps="false"
+        >
 
         <Button
             android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="61dp"
+            style="@style/SettingsButtonsStyle"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/ys_text_medium"
             android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/white"
             android:text="@string/settings"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
             android:textSize="26sp"
             app:icon="@drawable/strelka"
             app:iconGravity="textStart"
-            app:iconPadding="12dp"
-            app:iconTint="@color/black" />
+            />
 
         <Button
             android:id="@+id/button_theme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:backgroundTint="@color/white"
-            android:paddingTop="19dp"
-            android:paddingBottom="19dp"
+            style="@style/SettingsButtonsStyle"
             android:text="@string/dark"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="19sp"
-            app:icon="@drawable/control"
-            app:iconGravity="end"
-            app:iconPadding="12dp"
-            app:iconTint="@color/black" />
+            app:icon="@drawable/control" />
 
         <Button
             android:id="@+id/button_share"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:backgroundTint="@color/white"
-            android:paddingTop="19dp"
-            android:paddingBottom="19dp"
+            style="@style/SettingsButtonsStyle"
             android:text="@string/share"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="19sp"
-            app:icon="@drawable/light"
-            app:iconGravity="end"
-            app:iconPadding="12dp"
-            app:iconTint="@color/black" />
+            app:icon="@drawable/light" />
 
         <Button
             android:id="@+id/button_to_support"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:backgroundTint="@color/white"
-            android:paddingTop="19dp"
-            android:paddingBottom="19dp"
+            style="@style/SettingsButtonsStyle"
             android:text="@string/tosupp"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="19sp"
-            app:icon="@drawable/group"
-            app:iconGravity="end"
-            app:iconPadding="12dp"
-            app:iconTint="@color/black" />
+            app:icon="@drawable/group" />
 
         <Button
             android:id="@+id/button_user_agreement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:backgroundTint="@color/white"
-            android:paddingTop="19dp"
-            android:paddingBottom="19dp"
+            style="@style/SettingsButtonsStyle"
             android:text="@string/agr"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="19sp"
-            app:icon="@drawable/light_mode"
-            app:iconGravity="end"
-            app:iconPadding="12dp"
-            app:iconTint="@color/black" />
-
+            app:icon="@drawable/light_mode" />
 
     </LinearLayout>
 
