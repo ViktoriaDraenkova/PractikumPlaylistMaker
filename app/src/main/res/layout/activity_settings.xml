@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:theme="@style/Theme.PlaylistMaker">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="0dp"
+        android:paddingBottom="28dp"
+        android:textAllCaps="false"
+        >
+
+        <Button
+            android:id="@+id/back"
+            style="@style/SettingsButtonsStyle"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/ys_text_medium"
+            android:layout_marginBottom="24dp"
+            android:text="@string/settings"
+            android:textSize="26sp"
+            app:icon="@drawable/strelka"
+            app:iconGravity="textStart"
+            />
+
+        <Button
+            android:id="@+id/button_theme"
+            style="@style/SettingsButtonsStyle"
+            android:text="@string/dark"
+            app:icon="@drawable/control" />
+
+        <Button
+            android:id="@+id/button_share"
+            style="@style/SettingsButtonsStyle"
+            android:text="@string/share"
+            app:icon="@drawable/light" />
+
+        <Button
+            android:id="@+id/button_to_support"
+            style="@style/SettingsButtonsStyle"
+            android:text="@string/tosupp"
+            app:icon="@drawable/group" />
+
+        <Button
+            android:id="@+id/button_user_agreement"
+            style="@style/SettingsButtonsStyle"
+            android:text="@string/agr"
+            app:icon="@drawable/light_mode" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
