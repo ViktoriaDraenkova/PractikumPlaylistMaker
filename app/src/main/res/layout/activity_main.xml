@@ -9,7 +9,6 @@
     android:paddingBottom="28dp"
     android:textAllCaps="false"
     tools:context=".MainActivity"
-    android:theme="@style/Theme.PlaylistMaker"
     android:background="?attr/colorSecondaryVariant">
 
     <FrameLayout

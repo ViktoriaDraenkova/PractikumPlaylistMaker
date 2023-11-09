@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:theme="@style/Theme.PlaylistMaker">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,18 +14,28 @@
         android:paddingBottom="28dp"
         android:textAllCaps="false"
         >
-
-        <Button
+        <Toolbar
             android:id="@+id/back"
-            style="@style/SettingsButtonsStyle"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/ys_text_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="@string/settings"
-            android:textSize="26sp"
-            app:icon="@drawable/strelka"
-            app:iconGravity="textStart"
-            />
+            android:navigationIcon="@drawable/strelka"
+            android:contentInsetStartWithNavigation="0dp"
+            app:theme="@style/ToolbarColoredBackArrow"
+            >
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/ys_text_medium"
+                android:text="@string/settings"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
+                android:paddingStart="12dp"
+                android:textSize="26sp"
+                android:textColor="?attr/colorOnPrimary"
+                />
+        </Toolbar>
+
 
         <Button
             android:id="@+id/button_theme"
