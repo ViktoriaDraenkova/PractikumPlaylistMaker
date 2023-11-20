@@ -1,9 +1,7 @@
 package com.practicum.appplaylistmaker
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toolbar
 
 class SettingsActivity : AppCompatActivity() {
