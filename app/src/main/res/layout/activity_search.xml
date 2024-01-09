@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".SearchActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:textAllCaps="false">
+
         <Toolbar
             android:id="@+id/back"
             android:layout_width="match_parent"
@@ -40,34 +41,39 @@
             android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/Search"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shape"
+                android:drawableLeft="@drawable/lupa"
+                android:drawablePadding="4dp"
+                android:drawableTint="@color/text_grey"
                 android:hint="@string/search"
-                android:textSize="19sp"
-                android:textColorHint="@color/text_grey"
+                android:inputType="text"
+                android:maxLength="45"
+                android:maxLines="1"
                 android:paddingLeft="14dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:inputType="text"
-                android:lines="1"
-                android:maxLength="45"
-                android:background="@drawable/shape"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="16dp"
-                android:drawableLeft="@drawable/lupa"
-                android:drawableTint="@color/text_grey"
-                android:drawablePadding="4dp"
-                />
+                android:textColorHint="@color/text_grey"
+                android:textSize="19sp"
+                android:textColor="@color/black"/>
 
-            <ImageView
-                android:id="@+id/clearIcon"
+
+            <ImageButton
+                android:id="@+id/clearText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                android:visibility="gone"/>
+                android:layout_gravity="end|center"
+                android:layout_marginRight="20dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="Clear"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
         </FrameLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

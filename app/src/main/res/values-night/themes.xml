@@ -2,10 +2,10 @@
     <!-- Base application theme. -->
     <style name="Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorAccent">@android:color/white</item>
-<!--        <item name="colorSecondaryVariant">@color/dark_grey</item>-->
+    <item name="colorSecondaryVariant">@color/dark_grey</item>
         <item name="backgroundColor">@color/dark_grey</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="android:background">@android:color/red</item>
+        <item name="android:background">@color/dark_grey</item>
 
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
