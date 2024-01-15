@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
     private var mEditText: EditText? = null
-    var mClearText: ImageButton? = null
+    private var mClearText: ImageButton? = null
     private var textValue: String = AMOUNT_DEF
 
     companion object {

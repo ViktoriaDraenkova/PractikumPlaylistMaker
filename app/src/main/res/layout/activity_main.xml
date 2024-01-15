@@ -30,7 +30,7 @@
         android:id="@+id/button_search"
         style="@style/BigButtonsSlyle"
         android:text="@string/search"
-        app:icon="@drawable/lupa" />
+        app:icon="@drawable/big_lupa" />
 
     <Button
         android:id="@+id/button_media"
