@@ -52,5 +52,9 @@
     <style name="MySwitchStyle" parent = "Widget.AppCompat.CompoundButton.Switch">
         <item name="thumbTint">@drawable/control</item>
     </style>
-
+<style name="StyleForBack">
+    <item name="iconGravity">end</item>
+    <item name="iconPadding">12dp</item>
+    <item name="iconTint">?attr/colorOnPrimary</item>
+</style>
 </resources>
