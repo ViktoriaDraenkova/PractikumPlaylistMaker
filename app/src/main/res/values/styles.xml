@@ -16,7 +16,11 @@
         <item name="iconTint">@color/black</item>
         <item name="android:fontFamily">@font/ys_text_medium</item>
     </style>
-
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">@font/ys_text_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
     <style name="SettingsButtonsStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -34,7 +38,19 @@
         <item name="iconPadding">12dp</item>
         <item name="iconTint">?attr/colorOnPrimary</item>
         <item name="android:fontFamily">@font/ys_text_regular</item>
+    </style>
+    <style name ="ToolbarTitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/ys_text_medium</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
 
+    </style>
+    <style name="ToolbarColoredBackArrow">
+        <item name="android:textColorSecondary">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="MySwitchStyle" parent = "Widget.AppCompat.CompoundButton.Switch">
+        <item name="thumbTint">@drawable/control</item>
     </style>
 
 </resources>

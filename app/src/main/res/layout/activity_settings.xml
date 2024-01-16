@@ -1,58 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:theme="@style/Theme.PlaylistMaker">
+    android:orientation="vertical"
+    android:paddingHorizontal="0dp"
+    android:paddingBottom="28dp"
+    android:textAllCaps="false"
+    tools:context=".MainActivity">
 
-    <LinearLayout
+    <Toolbar
+        android:id="@+id/back"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingHorizontal="0dp"
-        android:paddingBottom="28dp"
-        android:textAllCaps="false"
-        >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:contentInsetStartWithNavigation="0dp"
+        android:navigationIcon="@drawable/strelka"
+        android:title="@string/settings"
+        android:titleTextAppearance="@style/ToolbarTitleText"
+        app:theme="@style/ToolbarColoredBackArrow" />
 
-        <Button
-            android:id="@+id/back"
-            style="@style/SettingsButtonsStyle"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/ys_text_medium"
-            android:layout_marginBottom="24dp"
-            android:text="@string/settings"
-            android:textSize="26sp"
-            app:icon="@drawable/strelka"
-            app:iconGravity="textStart"
-            />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/button_theme"
             style="@style/SettingsButtonsStyle"
-            android:text="@string/dark"
-            app:icon="@drawable/control" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
+            android:text="@string/dark" />
+<!--Честно говоря, я не знаю как ещё иначе расположить элементы так, чтобы текст был вплотную к свичу... Или свич был внутри текстового поля-->
+        <androidx.appcompat.widget.SwitchCompat
+            style="@style/MySwitchStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="10.5dp" />
 
-        <Button
-            android:id="@+id/button_share"
-            style="@style/SettingsButtonsStyle"
-            android:text="@string/share"
-            app:icon="@drawable/light" />
-
-        <Button
-            android:id="@+id/button_to_support"
-            style="@style/SettingsButtonsStyle"
-            android:text="@string/tosupp"
-            app:icon="@drawable/group" />
-
-        <Button
-            android:id="@+id/button_user_agreement"
-            style="@style/SettingsButtonsStyle"
-            android:text="@string/agr"
-            app:icon="@drawable/light_mode" />
-
-    </LinearLayout>
+    </RelativeLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/button_share"
+        style="@style/SettingsButtonsStyle"
+        android:text="@string/share"
+        app:icon="@drawable/share" />
+
+    <Button
+        android:id="@+id/button_to_support"
+        style="@style/SettingsButtonsStyle"
+        android:text="@string/tosupp"
+        app:icon="@drawable/group" />
+
+    <Button
+        android:id="@+id/button_user_agreement"
+        style="@style/SettingsButtonsStyle"
+        android:text="@string/agr"
+        app:icon="@drawable/big_lupa" />
+
+</LinearLayout>
