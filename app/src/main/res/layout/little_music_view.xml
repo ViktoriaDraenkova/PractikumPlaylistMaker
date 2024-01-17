@@ -1,97 +1,91 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="61dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardElevation="4dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="61dp">
+    <ImageView
+        android:id="@+id/soundImage"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/corner_for_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/soundImage"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/corner_for_placeholder"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/soundName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:ems="16"
+        android:fontFamily="@font/ys_text_regular"
+        android:maxLines="1"
+        android:textColor="@color/day_black_night_white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/soundImage"
+        app:layout_constraintTop_toTopOf="@+id/soundImage"
+        tools:text="Название трека" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="66dp"
+        android:layout_marginTop="34dp">
 
         <TextView
-            android:id="@+id/soundName"
+            android:id="@+id/soundAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="6dp"
             android:fontFamily="@font/ys_text_regular"
-            android:text="Хомяк Добряк"
-            android:maxLines="1"
-            android:ems = "16"
-            android:ellipsize="end"
-            android:textColor="@color/day_black_night_white"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/soundImage"
-            app:layout_constraintTop_toTopOf="@+id/soundImage" />
+            android:textColor="@color/day_gray_night_white"
+            android:textSize="11sp"
+            tools:text="Исполнитель" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="66dp"
-            android:layout_marginTop="34dp">
-
-            <TextView
-                android:id="@+id/soundAuthor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ys_text_regular"
-                android:textSize="11sp"
-                android:textColor="@color/day_gray_night_white"
-
-                android:text="Текст новости" />
-
-            <ImageView
-                android:id="@+id/sourceImage"
-                android:layout_width="3dp"
-                android:layout_height="3dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/circle_delimiter"
-                />
-
-            <TextView
-                android:id="@+id/soundDuration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ys_text_regular"
-                android:textSize="11sp"
-                android:textColor="@color/day_gray_night_white"
-                android:text="Время" />
-        </LinearLayout>
-        <ImageButton
-            android:id="@+id/sourceImage3"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/sourceImage"
+            android:layout_width="3dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/to_go_listen_button"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginRight="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/circle_delimiter" />
+
+        <TextView
+            android:id="@+id/soundDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_text_regular"
+            android:textColor="@color/day_gray_night_white"
+            android:textSize="11sp"
+            tools:text="Время" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/sourceImage3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="TODO"
+        android:src="@drawable/to_go_listen_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
 
 
-            android:contentDescription="TODO" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

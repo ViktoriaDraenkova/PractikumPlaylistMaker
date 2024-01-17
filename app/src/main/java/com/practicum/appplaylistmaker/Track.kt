@@ -1,15 +1,8 @@
 package com.practicum.appplaylistmaker;
 
-public class Track {
-    var trackName: String =""
-    var artistName: String=""
-    var trackTime: String=""
-    var artworkUrl100: String =""
-    constructor(trackName: String, artistName: String, trackTime: String, artworkUrl100: String){
-        this.trackName=trackName
-        this.trackTime=trackTime
-        this.artistName=artistName
-        this.artworkUrl100=artworkUrl100
-    }
-
-}
+data class Track(
+    val trackName: String,
+    val artistName: String,
+    val trackTime: String,
+    val artworkUrl100: String
+)

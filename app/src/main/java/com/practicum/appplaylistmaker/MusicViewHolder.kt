@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.practicum.appplaylistmaker.R
 import com.practicum.appplaylistmaker.Track
-
+import com.practicum.appplaylistmaker.dpToPx
 
 
 class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,8 +37,5 @@ class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Glide.with(itemView).load(model.artworkUrl100).error(R.drawable.placeholder)
             .apply(requestOptions).into(soundImage)
     }
-    fun Int.dpToPx(context: Context): Int {
-        val density = context.resources.displayMetrics.density
-        return (this * density).toInt()
-    }
+
 }
