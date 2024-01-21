@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:layout_gravity="center">
+    <!--  я не знаю как его центрировать нормально... Пробовала мне кажется уже всё... А жестко задавать отступ, кажется, не очень хороший тон -->
+
+    <ImageView
+        android:id="@+id/no_internet"
+        style="@style/StyleForImageInActivityWithAnyProblems"
+        android:background="@drawable/no_internet"
+        tools:ignore="MissingConstraints"
+        />
+
+    <TextView
+        android:id="@+id/text_problem"
+        style="@style/TexInActivityWithAnyProblems"
+        android:text="@string/no_internet"
+        app:layout_constraintTop_toBottomOf="@+id/no_internet"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button_update"
+        style="@style/ButtonUpdate"
+        android:text="@string/update"
+        app:layout_constraintTop_toBottomOf="@+id/text_problem"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,6 +48,8 @@
                 android:hint="@string/search"
                 android:inputType="text"
                 android:maxLength="45"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:maxLines="1"
                 android:paddingLeft="12dp"
                 android:paddingTop="8.5dp"
@@ -70,9 +72,16 @@
                 android:src="@drawable/cross"
                 tools:ignore="TouchTargetSizeCheck" />
         </FrameLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/musicList"
+        <FrameLayout
+            android:id="@+id/contentContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/musicList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </FrameLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

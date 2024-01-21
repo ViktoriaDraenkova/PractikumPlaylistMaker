@@ -9,6 +9,7 @@
     <color name="icon_color">#AEAFB4</color>
     <color name="day_gray_night_white">#AEAFB4</color>
     <color name="day_black_night_white">#000000</color>
+    <color name="day_white_night_black">#FFFFFFFF</color>
 
 
 </resources>
