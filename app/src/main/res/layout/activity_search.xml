@@ -76,6 +76,61 @@
             android:id="@+id/contentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/no_internet_view"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-24dp"
+                android:layout_gravity="center">
+                <!--  я не знаю как его центрировать нормально... Пробовала мне кажется уже всё... А жестко задавать отступ, кажется, не очень хороший тон -->
+
+                <ImageView
+                    android:id="@+id/no_internet"
+                    style="@style/StyleForImageInActivityWithAnyProblems"
+                    android:background="@drawable/no_internet"
+                    tools:ignore="MissingConstraints"
+                    />
+
+                <TextView
+                    android:id="@+id/text_problem"
+                    style="@style/TexInActivityWithAnyProblems"
+                    android:text="@string/no_internet"
+                    app:layout_constraintTop_toBottomOf="@+id/no_internet"
+                    tools:ignore="MissingConstraints" />
+
+                <Button
+                    android:id="@+id/button_update"
+                    style="@style/ButtonUpdate"
+                    android:text="@string/update"
+                    app:layout_constraintTop_toBottomOf="@+id/text_problem"
+                    tools:ignore="MissingConstraints" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/no_music_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-24dp"
+                android:visibility="gone"
+                android:layout_gravity="center">
+                <!--  я не знаю как его центрировать нормально... Пробовала мне кажется уже всё... А жестко задавать отступ, кажется, не очень хороший тон -->
+
+                <ImageView
+                    android:id="@+id/no_music"
+                    style="@style/StyleForImageInActivityWithAnyProblems"
+                    android:background="@drawable/no_music"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    style="@style/TexInActivityWithAnyProblems"
+                    android:text="@string/no_music"
+                    app:layout_constraintTop_toBottomOf="@+id/no_music"
+                    tools:ignore="MissingConstraints" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/musicList"
                 android:layout_width="match_parent"

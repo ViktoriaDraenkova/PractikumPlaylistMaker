@@ -47,14 +47,11 @@
             android:id="@+id/soundAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:ems="7"
             android:maxLines="1"
             android:fontFamily="@font/ys_text_regular"
             android:textColor="@color/day_gray_night_white"
             android:textSize="11sp"
             tools:text="Исполнитель" />
-        <!-- В макете указана везде одна группа, если я в то смотрю, и сделала примерно =) Как склеивать прям я не знаю =( -->
 
         <ImageView
             android:id="@+id/sourceImage"

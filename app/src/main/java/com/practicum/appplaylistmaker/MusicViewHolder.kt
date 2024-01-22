@@ -7,12 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
 import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.api.SearchTrackResponse
 import com.practicum.appplaylistmaker.api.Track
 import com.practicum.appplaylistmaker.dpToPx
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 
 class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,7 +32,7 @@ class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         soundAuthor.text = model.artistName
         soundName.text = model.trackName
-        soundDuration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
+        soundDuration.text = MillisecondsToHumanReadable(model.trackTime)
 
         Glide.with(itemView).load(model.artworkUrl100).error(R.drawable.placeholder)
             .apply(requestOptions).into(soundImage)

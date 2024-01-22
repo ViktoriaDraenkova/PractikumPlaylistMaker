@@ -3,7 +3,6 @@ package com.practicum.appplaylistmaker
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -27,13 +26,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class SearchActivity : AppCompatActivity() {
+    companion object {
+        const val TEXT_VALUE = "TEXT_VALUE"
+        const val AMOUNT_DEF = ""
+    }
     private var mEditText: EditText? = null
     private var mClearText: ImageButton? = null
     private var textValue: String = AMOUNT_DEF
     private var contentContainer: FrameLayout? = null
     private var noTracksView: View? = null
     private var noInternetView: View? = null
-
     private val baseUrl = "https://itunes.apple.com"
 
     private val retrofit = Retrofit.Builder()
@@ -53,10 +55,7 @@ class SearchActivity : AppCompatActivity() {
         // TODO: Переход на плеер (в следующих спринтах)
     }
 
-    companion object {
-        const val TEXT_VALUE = "TEXT_VALUE"
-        const val AMOUNT_DEF = ""
-    }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -65,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        mEditText!!.setText(savedInstanceState.getString(TEXT_VALUE))
+        mEditText?.setText(savedInstanceState.getString(TEXT_VALUE))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,27 +73,16 @@ class SearchActivity : AppCompatActivity() {
         mEditText = findViewById<View>(R.id.Search) as EditText
         mClearText = findViewById<View>(R.id.clearText) as ImageButton
         contentContainer = findViewById<ViewGroup>(R.id.contentContainer) as FrameLayout
-        val inflater = LayoutInflater.from(this)
-        noInternetView = inflater.inflate(R.layout.no_internet_view, null)
-        noTracksView = inflater.inflate(R.layout.no_music_view, null)
-        contentContainer?.addView(noTracksView)
-        var buttonUpdate: Button? = noInternetView?.findViewById<Button>(R.id.button_update)
-        if (noInternetView == null) {
-            println("iiiiiiiiiiiiiiiiiiii")
-        }
-        if (buttonUpdate == null) {
-            println("uuuuuuuuuuuuuuuuuuu")
-        }
+        noInternetView = findViewById(R.id.no_internet_view)
+        noTracksView = findViewById(R.id.no_music_view)
+
+        val buttonUpdate: Button? = findViewById(R.id.button_update)
         buttonUpdate?.setOnClickListener {
-            println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             search()
         }
-        contentContainer?.addView(noInternetView)
 
-        println("OnCreate of search activity")
-        mEditText!!.setOnEditorActionListener { _, actionId, _ ->
+        mEditText?.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                println("TROLOLO")
 
                 search()
                 true
@@ -113,11 +101,11 @@ class SearchActivity : AppCompatActivity() {
         recyclerMusicView.layoutManager = LinearLayoutManager(this)
         recyclerMusicView.adapter = adapter
 
-        mClearText!!.setOnClickListener {
+        mClearText?.setOnClickListener {
             clear(mEditText)
         }
-        mClearText!!.visibility = View.INVISIBLE
-        mEditText!!.addTextChangedListener(object : TextWatcher {
+        mClearText?.visibility = View.INVISIBLE
+        mEditText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
             }
 
@@ -126,9 +114,9 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.length != 0) {
-                    mClearText!!.visibility = View.VISIBLE
+                    mClearText?.visibility = View.VISIBLE
                 } else {
-                    mClearText!!.visibility = View.GONE
+                    mClearText?.visibility = View.GONE
                 }
                 textValue = s.toString()
             }
@@ -137,20 +125,24 @@ class SearchActivity : AppCompatActivity() {
 
     //clear button onclick
     fun clear(view: View?) {
-        mEditText!!.setText("")
-        mClearText!!.visibility = View.GONE
+        mEditText?.setText("")
+        mClearText?.visibility = View.GONE
+        noTracksView?.visibility = View.GONE
+        noInternetView?.visibility = View.GONE
+        tracks.clear()
+        adapter.notifyDataSetChanged()
+
     }
 
     private fun showNoResults() {
-        println("no misic")
 
         tracks.clear()
         adapter.notifyDataSetChanged()
         noTracksView?.visibility = View.VISIBLE
+
     }
 
     private fun showInternetError() {
-        println("no internet")
         tracks.clear()
         adapter.notifyDataSetChanged()
         noInternetView?.visibility = View.VISIBLE
@@ -171,7 +163,7 @@ class SearchActivity : AppCompatActivity() {
                         200 -> {
                             if (response.body()?.results?.isNotEmpty() == true) {
                                 tracks.clear()
-                                tracks.addAll(response.body()?.results!!)
+                                tracks.addAll(response.body()!!.results)
                                 adapter.notifyDataSetChanged()
                             } else {
                                 showNoResults()
@@ -186,7 +178,6 @@ class SearchActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<SearchTrackResponse>, t: Throwable) {
                     println(t.message)
-
                     showInternetError()
                 }
 
