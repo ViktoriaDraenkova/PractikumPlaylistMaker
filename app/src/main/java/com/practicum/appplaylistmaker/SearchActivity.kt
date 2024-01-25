@@ -1,5 +1,6 @@
 package com.practicum.appplaylistmaker
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,10 +15,10 @@ import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.practicum.appplaylistmaker.api.ITunesApi
 import com.practicum.appplaylistmaker.api.SearchTrackResponse
 import com.practicum.appplaylistmaker.api.Track
-import com.practicum.recyclerview_lesson_1.MusicAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,37 +26,53 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
+
 class SearchActivity : AppCompatActivity() {
     companion object {
         const val TEXT_VALUE = "TEXT_VALUE"
         const val AMOUNT_DEF = ""
+        const val MAX_HISTORY_SIZE = 10
     }
-    private var mEditText: EditText? = null
-    private var mClearText: ImageButton? = null
+
+    private lateinit var mEditText: EditText
+    private lateinit var mClearText: ImageButton
     private var textValue: String = AMOUNT_DEF
-    private var contentContainer: FrameLayout? = null
-    private var noTracksView: View? = null
-    private var noInternetView: View? = null
+    private lateinit var contentContainer: FrameLayout
+    private lateinit var noTracksView: View
+    private lateinit var noInternetView: View
     private val baseUrl = "https://itunes.apple.com"
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
+    private lateinit var historyWithMusic: ViewGroup
+    private lateinit var sharedPreferences: SharedPreferences
+    private val retrofit =
+        Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create())
+            .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
 
     private val tracks = ArrayList<Track>()
     private val adapter = MusicAdapter {
         showTrack(it)
     }
-
-    private fun showTrack(it: Track) {
-        println("Трек отображён")
-        // TODO: Переход на плеер (в следующих спринтах)
+    private val historyAdapter = MusicAdapter {
+        showTrack(it)
     }
 
 
+    private fun showTrack(it: Track) {
+        addingToHistory(it)
+        // TODO: Переход на плеер (в следующих спринтах)
+    }
+
+    private fun addingToHistory(it: Track) {
+        var history = getTracksHistoryFromSharedPrefs()
+        history = history.filter { track -> track != it }.toTypedArray()
+        history = arrayOf(it) + history
+        history = history.take(MAX_HISTORY_SIZE).toTypedArray()
+        sharedPreferences.edit().putString(HISTORY_TRACKS_KEY, Gson().toJson(history)).apply()
+    }
+
+    private fun createTrackListFromJson(json: String): Array<Track> {
+        return Gson().fromJson(json, Array<Track>::class.java)
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -64,7 +81,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        mEditText?.setText(savedInstanceState.getString(TEXT_VALUE))
+        mEditText.setText(savedInstanceState.getString(TEXT_VALUE))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,15 +92,29 @@ class SearchActivity : AppCompatActivity() {
         contentContainer = findViewById<ViewGroup>(R.id.contentContainer) as FrameLayout
         noInternetView = findViewById(R.id.no_internet_view)
         noTracksView = findViewById(R.id.no_music_view)
+        historyWithMusic = findViewById(R.id.history_music_list)
+
+        sharedPreferences = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
+
+        val buttonClearHistory: Button? = findViewById(R.id.button_clean)
+        buttonClearHistory?.setOnClickListener {
+            historyAdapter.tracks.clear()
+            sharedPreferences.edit().putString(HISTORY_TRACKS_KEY, Gson().toJson(arrayOf<Track>())).apply()
+            historyAdapter.notifyDataSetChanged()
+        }
 
         val buttonUpdate: Button? = findViewById(R.id.button_update)
         buttonUpdate?.setOnClickListener {
             search()
         }
-
-        mEditText?.setOnEditorActionListener { _, actionId, _ ->
+        mEditText.setOnFocusChangeListener { _, hasFocus ->
+            historyAdapter.tracks = ArrayList(getTracksHistoryFromSharedPrefs().toList())
+            historyAdapter.notifyDataSetChanged()
+            historyWithMusic.visibility =
+                if (hasFocus && mEditText.text.isEmpty()) View.VISIBLE else View.GONE
+        }
+        mEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-
                 search()
                 true
             }
@@ -95,17 +126,21 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-        val recyclerMusicView = findViewById<RecyclerView>(R.id.musicList)
+        val recyclerMusicHistoryView =
+            findViewById<RecyclerView>(R.id.musicListHistory)
+        recyclerMusicHistoryView.layoutManager = LinearLayoutManager(this)
+        recyclerMusicHistoryView.adapter = historyAdapter
 
+        val recyclerMusicView = findViewById<RecyclerView>(R.id.music_list)
         adapter.tracks = tracks
         recyclerMusicView.layoutManager = LinearLayoutManager(this)
         recyclerMusicView.adapter = adapter
 
-        mClearText?.setOnClickListener {
+        mClearText.setOnClickListener {
             clear(mEditText)
         }
-        mClearText?.visibility = View.INVISIBLE
-        mEditText?.addTextChangedListener(object : TextWatcher {
+        mClearText.visibility = View.INVISIBLE
+        mEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
             }
 
@@ -114,9 +149,11 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.length != 0) {
-                    mClearText?.visibility = View.VISIBLE
+                    historyWithMusic.visibility = View.GONE
+                    mClearText.visibility = View.VISIBLE
                 } else {
-                    mClearText?.visibility = View.GONE
+                    historyWithMusic.visibility = View.VISIBLE
+                    mClearText.visibility = View.GONE
                 }
                 textValue = s.toString()
             }
@@ -125,10 +162,10 @@ class SearchActivity : AppCompatActivity() {
 
     //clear button onclick
     fun clear(view: View?) {
-        mEditText?.setText("")
-        mClearText?.visibility = View.GONE
-        noTracksView?.visibility = View.GONE
-        noInternetView?.visibility = View.GONE
+        mEditText.setText("")
+        mClearText.visibility = View.GONE
+        noTracksView.visibility = View.GONE
+        noInternetView.visibility = View.GONE
         tracks.clear()
         adapter.notifyDataSetChanged()
 
@@ -138,25 +175,34 @@ class SearchActivity : AppCompatActivity() {
 
         tracks.clear()
         adapter.notifyDataSetChanged()
-        noTracksView?.visibility = View.VISIBLE
+        noTracksView.visibility = View.VISIBLE
 
     }
+
+    private fun getTracksHistoryFromSharedPrefs(): Array<Track> {
+        val tracksHistory = sharedPreferences.getString(HISTORY_TRACKS_KEY, null)
+        if (tracksHistory != null) {
+            return createTrackListFromJson(tracksHistory)
+        }
+        return arrayOf()
+
+    }
+
 
     private fun showInternetError() {
         tracks.clear()
         adapter.notifyDataSetChanged()
-        noInternetView?.visibility = View.VISIBLE
+        noInternetView.visibility = View.VISIBLE
 
     }
 
     private fun search() {
-        noTracksView?.visibility = View.GONE
-        noInternetView?.visibility = View.GONE
-        iTunesService.search(mEditText?.text.toString())
+        noTracksView.visibility = View.GONE
+        noInternetView.visibility = View.GONE
+        iTunesService.search(mEditText.text.toString())
             .enqueue(object : Callback<SearchTrackResponse> {
                 override fun onResponse(
-                    call: Call<SearchTrackResponse>,
-                    response: Response<SearchTrackResponse>
+                    call: Call<SearchTrackResponse>, response: Response<SearchTrackResponse>
                 ) {
                     println("Got response " + response.code())
                     when (response.code()) {

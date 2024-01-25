@@ -1,15 +1,12 @@
-package com.practicum.recyclerview_lesson_1
+package com.practicum.appplaylistmaker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.TrackClickListener
-import com.practicum.appplaylistmaker.api.SearchTrackResponse
 import com.practicum.appplaylistmaker.api.Track
 
 class MusicAdapter(
-    val clickListener: TrackClickListener
+    private val clickListener: TrackClickListener
 ) : RecyclerView.Adapter<MusicViewHolder> () {
 
     var tracks = ArrayList<Track>()
