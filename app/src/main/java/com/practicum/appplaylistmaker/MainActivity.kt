@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPrefs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
         val isDarkTheme = sharedPrefs.getBoolean(THEME_SWITCHER_KEY, false)
-        (applicationContext as App).switchTheme(isDarkTheme)
+        (applicationContext as? App)?.switchTheme(isDarkTheme)
 
         val buttonSearch = findViewById<Button>(R.id.button_search)
         buttonSearch.setOnClickListener {

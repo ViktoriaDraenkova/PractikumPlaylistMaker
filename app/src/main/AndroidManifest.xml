@@ -16,7 +16,7 @@
         <activity
             android:name=".SearchActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            />
         <activity
             android:name=".MediaActivity"
             android:exported="false" />

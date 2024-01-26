@@ -26,7 +26,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-
 class SearchActivity : AppCompatActivity() {
     companion object {
         const val TEXT_VALUE = "TEXT_VALUE"
@@ -62,6 +61,8 @@ class SearchActivity : AppCompatActivity() {
         // TODO: Переход на плеер (в следующих спринтах)
     }
 
+
+
     private fun addingToHistory(it: Track) {
         var history = getTracksHistoryFromSharedPrefs()
         history = history.filter { track -> track != it }.toTypedArray()
@@ -84,6 +85,13 @@ class SearchActivity : AppCompatActivity() {
         mEditText.setText(savedInstanceState.getString(TEXT_VALUE))
     }
 
+    private fun updateHistory() {
+        historyAdapter.tracks = ArrayList(getTracksHistoryFromSharedPrefs().toList())
+        adapter.tracks.clear()
+        adapter.notifyDataSetChanged()
+        historyAdapter.notifyDataSetChanged()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -99,19 +107,21 @@ class SearchActivity : AppCompatActivity() {
         val buttonClearHistory: Button? = findViewById(R.id.button_clean)
         buttonClearHistory?.setOnClickListener {
             historyAdapter.tracks.clear()
-            sharedPreferences.edit().putString(HISTORY_TRACKS_KEY, Gson().toJson(arrayOf<Track>())).apply()
+            sharedPreferences.edit().putString(HISTORY_TRACKS_KEY, Gson().toJson(arrayOf<Track>()))
+                .apply()
             historyAdapter.notifyDataSetChanged()
+            historyWithMusic.visibility = View.GONE
         }
+
 
         val buttonUpdate: Button? = findViewById(R.id.button_update)
         buttonUpdate?.setOnClickListener {
             search()
         }
         mEditText.setOnFocusChangeListener { _, hasFocus ->
-            historyAdapter.tracks = ArrayList(getTracksHistoryFromSharedPrefs().toList())
-            historyAdapter.notifyDataSetChanged()
+            updateHistory()
             historyWithMusic.visibility =
-                if (hasFocus && mEditText.text.isEmpty()) View.VISIBLE else View.GONE
+                if (hasFocus && mEditText.text.isEmpty() && historyAdapter.tracks.isNotEmpty()) View.VISIBLE else View.GONE
         }
         mEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -152,8 +162,13 @@ class SearchActivity : AppCompatActivity() {
                     historyWithMusic.visibility = View.GONE
                     mClearText.visibility = View.VISIBLE
                 } else {
-                    historyWithMusic.visibility = View.VISIBLE
+                    updateHistory()
                     mClearText.visibility = View.GONE
+                    if (historyAdapter.tracks.isEmpty()) {
+                        historyWithMusic.visibility = View.GONE
+                    } else {
+                        historyWithMusic.visibility = View.VISIBLE
+                    }
                 }
                 textValue = s.toString()
             }

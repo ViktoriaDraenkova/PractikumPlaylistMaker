@@ -29,7 +29,6 @@ class SettingsActivity : AppCompatActivity() {
 
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             (applicationContext as App).switchTheme(checked)
-            println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             sharedPrefs.edit()
                 .putBoolean(THEME_SWITCHER_KEY, checked)
                 .apply()
