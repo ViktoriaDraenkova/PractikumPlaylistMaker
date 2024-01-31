@@ -1,9 +1,11 @@
 package com.practicum.appplaylistmaker
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -57,10 +59,17 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun showTrack(it: Track) {
+        Log.d("showTrack", it.toString())
         addingToHistory(it)
+// создание объекта Intent для запуска SecondActivity
+        val intent = Intent(this, AudioplayerActivity::class.java)
+// передача объекта с ключом "hello" и значением "Hello World"
+        intent.putExtra(KEY_FOR_TRACK, Gson().toJson(it))
+// запуск SecondActivity
+        startActivity(intent)
+
         // TODO: Переход на плеер (в следующих спринтах)
     }
-
 
 
     private fun addingToHistory(it: Track) {
