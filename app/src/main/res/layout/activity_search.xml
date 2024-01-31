@@ -19,43 +19,43 @@
             android:layout_marginBottom="0dp"
             android:contentInsetStartWithNavigation="0dp"
             android:navigationIcon="@drawable/strelka"
-            app:theme="@style/ToolbarColoredBackArrow"
-            tools:ignore="MissingConstraints"
             android:title="@string/search"
             android:titleTextAppearance="@style/ToolbarTitleText"
-            >
-        </Toolbar>
+            app:theme="@style/ToolbarColoredBackArrow"
+            tools:ignore="MissingConstraints" />
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
 
             <EditText
                 android:id="@+id/Search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textCursorDrawable="@drawable/cursor"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
+                android:autofillHints=""
                 android:background="@drawable/shape"
-                android:drawableLeft="@drawable/lupa"
+                android:drawableStart="@drawable/lupa"
                 android:drawablePadding="8dp"
                 android:drawableTint="@color/text_grey"
                 android:hint="@string/search"
+                android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLength="45"
-                android:imeOptions="actionDone"
-                android:singleLine="true"
                 android:maxLines="1"
-                android:paddingLeft="12dp"
+                android:paddingStart="12dp"
                 android:paddingTop="8.5dp"
                 android:paddingBottom="7.5dp"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="@color/text_grey"
+                android:textCursorDrawable="@drawable/cursor"
                 android:textSize="16sp"
                 tools:ignore="TouchTargetSizeCheck" />
 
@@ -65,32 +65,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="Clear"
                 android:padding="8dp"
                 android:src="@drawable/cross"
                 tools:ignore="TouchTargetSizeCheck" />
         </FrameLayout>
+
         <FrameLayout
             android:id="@+id/contentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/no_internet_view"
                 android:layout_width="wrap_content"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="-24dp"
-                android:layout_gravity="center">
+                android:visibility="gone"
+                tools:ignore="MissingConstraints">
                 <!--  я не знаю как его центрировать нормально... Пробовала мне кажется уже всё... А жестко задавать отступ, кажется, не очень хороший тон -->
 
                 <ImageView
                     android:id="@+id/no_internet"
                     style="@style/StyleForImageInActivityWithAnyProblems"
                     android:background="@drawable/no_internet"
-                    tools:ignore="MissingConstraints"
-                    />
+                    tools:ignore="MissingConstraints" />
 
                 <TextView
                     android:id="@+id/text_problem"
@@ -112,10 +114,10 @@
                 android:id="@+id/no_music_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="-24dp"
                 android:visibility="gone"
-                android:layout_gravity="center">
-                <!--  я не знаю как его центрировать нормально... Пробовала мне кажется уже всё... А жестко задавать отступ, кажется, не очень хороший тон -->
+                tools:ignore="MissingConstraints">
 
                 <ImageView
                     android:id="@+id/no_music"
@@ -132,10 +134,60 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/musicList"
+                android:id="@+id/music_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ScrollView
+                android:id="@+id/history_music_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:visibility="gone">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/ys_text_medium"
+                        android:paddingTop="18dp"
+                        android:paddingBottom="12dp"
+                        android:text="@string/you_search_it_later"
+                        android:textColor="@color/day_black_night_white"
+                        android:textSize="19sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/musicListHistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_search" />
+
+                    <Button
+                        android:id="@+id/button_clean"
+                        style="@style/ButtonUpdate"
+                        android:layout_marginTop="24dp"
+                        android:gravity="center"
+                        android:text="@string/clean_history"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/musicListHistory" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ScrollView>
         </FrameLayout>
 
     </LinearLayout>

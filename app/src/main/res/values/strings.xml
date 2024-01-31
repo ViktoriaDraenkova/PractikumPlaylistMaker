@@ -4,7 +4,7 @@
     <string name="search">Поиск</string>
     <string name="media">Медиатека</string>
     <string name="settings">Настройки</string>
-    <string name="dark">Ночная тема</string>
+    <string name="dark">Тёмная тема</string>
     <string name="share">Поделиться приложением</string>
     <string name="tosupp">Написать в поддержку</string>
     <string name="agr">Пользовательское соглашение</string>
@@ -17,4 +17,13 @@
     <string name="no_music">Ничего не нашлось</string>
     <string name="no_internet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="update">Обновить</string>
+    <string name="clean_history">Очистить историю</string>
+    <string name="you_search_it_later">Вы искали</string>
+    <string name="play_music">Play Music</string>
+    <string name="genre">Жанр</string>
+    <string name="year">Год</string>
+    <string name="country">Страна</string>
+    <string name="album">Альбом</string>
+    <string name="duration">Длительность</string>
+
 </resources>

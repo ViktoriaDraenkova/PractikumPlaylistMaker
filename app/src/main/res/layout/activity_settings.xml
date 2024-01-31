@@ -23,28 +23,11 @@
         app:theme="@style/ToolbarColoredBackArrow" />
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/button_theme"
-            style="@style/SettingsButtonsStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="8dp"
-            android:text="@string/dark" />
-<!--Честно говоря, я не знаю как ещё иначе расположить элементы так, чтобы текст был вплотную к свичу... Или свич был внутри текстового поля-->
-        <androidx.appcompat.widget.SwitchCompat
-            style="@style/MySwitchStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:padding="10.5dp" />
-
-    </RelativeLayout>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
+        style="@style/MySwitchStyle"
+        android:text="@string/dark" />
 
 
     <Button
@@ -64,5 +47,6 @@
         style="@style/SettingsButtonsStyle"
         android:text="@string/agr"
         app:icon="@drawable/big_lupa" />
+
 
 </LinearLayout>

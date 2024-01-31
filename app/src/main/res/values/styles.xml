@@ -53,8 +53,9 @@
         <item name="android:textColorSecondary">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="MySwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+    <style name="MySwitchStyle" parent="SettingsButtonsStyle">
         <item name="thumbTint">@drawable/control</item>
+        <item name="trackTint">@color/day_light_gray_night_light_blue</item>
     </style>
 
     <style name="StyleForBack">
@@ -82,17 +83,38 @@
         <item name="android:fontFamily">@font/ys_text_medium</item>
         <item name="android:textSize">19sp</item>
     </style>
+
     <style name="ButtonUpdate">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">24dp</item>
         <item name="android:backgroundTint">@color/day_black_night_white</item>
         <item name="android:fontFamily">@font/ys_text_medium</item>
+        <item name="cornerRadius">54dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/day_white_night_black</item>
         <item name="android:textSize">14sp</item>
         <item name="layout_constraintEnd_toEndOf">parent</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
+    </style>
+
+
+    <style name="TextStyleGrayRegular13">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/ys_text_regular</item>
+        <item name="android:textColor">@color/text_grey</item>
+    </style>
+
+    <style name="TextStyleBicolorRegular13">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/ys_text_regular</item>
+        <item name="android:textColor">@color/day_black_night_white</item>
+    </style>
+
+    <style name="TextStyleBicolorMedium14">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/ys_text_medium</item>
+        <item name="android:textColor">@color/day_black_night_white</item>
     </style>
 </resources>
