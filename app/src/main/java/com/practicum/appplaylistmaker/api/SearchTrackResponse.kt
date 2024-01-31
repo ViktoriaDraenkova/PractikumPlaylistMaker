@@ -1,6 +1,7 @@
 package com.practicum.appplaylistmaker.api;
 
 import com.google.gson.annotations.SerializedName
+import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
 
 data class Track(
     val trackId: Int,
@@ -8,8 +9,15 @@ data class Track(
     val artistName: String,
     @SerializedName("trackTimeMillis")
     val trackTime: Int,
-    val artworkUrl100: String
-)
+    val artworkUrl100: String,
+    val releaseDate: String,
+    val collectionName: String,
+    val primaryGenreName: String,
+    val country: String
+){
+    fun getArtWorkUrl512() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
+    fun getHumanReadableDuration() = MillisecondsToHumanReadable(trackTime)
+}
 
 
 data class SearchTrackResponse(
