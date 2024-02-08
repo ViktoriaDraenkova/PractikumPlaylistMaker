@@ -10,8 +10,10 @@
     <color name="day_gray_night_white">#AEAFB4</color>
     <color name="day_black_night_white">#000000</color>
     <color name="day_white_night_black">#FFFFFFFF</color>
+    <color name="day_black_night_white_80">#50000000</color>
     <color name="day_gray_night_blue">#AEAFB4</color>
     <color name="day_light_gray_night_light_blue">#E6E8EB</color>
+    <color name="purple_blue">#6200EE</color>
 
 
 

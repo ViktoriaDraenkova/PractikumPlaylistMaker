@@ -13,7 +13,8 @@ data class Track(
     val releaseDate: String,
     val collectionName: String,
     val primaryGenreName: String,
-    val country: String
+    val country: String,
+    val previewUrl:String
 ){
     fun getArtWorkUrl512() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
     fun getHumanReadableDuration() = MillisecondsToHumanReadable(trackTime)
