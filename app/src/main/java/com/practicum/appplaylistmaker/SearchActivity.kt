@@ -2,7 +2,10 @@ package com.practicum.appplaylistmaker
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,6 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,8 +37,12 @@ class SearchActivity : AppCompatActivity() {
         const val TEXT_VALUE = "TEXT_VALUE"
         const val AMOUNT_DEF = ""
         const val MAX_HISTORY_SIZE = 10
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+
     }
 
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
     private lateinit var mEditText: EditText
     private lateinit var mClearText: ImageButton
     private var textValue: String = AMOUNT_DEF
@@ -42,13 +50,14 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var noTracksView: View
     private lateinit var noInternetView: View
     private val baseUrl = "https://itunes.apple.com"
+    private lateinit var progressBar: ProgressBar
     private lateinit var historyWithMusic: ViewGroup
     private lateinit var sharedPreferences: SharedPreferences
+
     private val retrofit =
         Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create())
             .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
-
     private val tracks = ArrayList<Track>()
     private val adapter = MusicAdapter {
         showTrack(it)
@@ -57,59 +66,22 @@ class SearchActivity : AppCompatActivity() {
         showTrack(it)
     }
 
+    private val searchRunnable = Runnable { search() }
 
-    private fun showTrack(it: Track) {
-        Log.d("showTrack", it.toString())
-        addingToHistory(it)
-// создание объекта Intent для запуска SecondActivity
-        val intent = Intent(this, AudioplayerActivity::class.java)
-// передача объекта с ключом "hello" и значением "Hello World"
-        intent.putExtra(KEY_FOR_TRACK, Gson().toJson(it))
-// запуск SecondActivity
-        startActivity(intent)
-
-        // TODO: Переход на плеер (в следующих спринтах)
-    }
-
-
-    private fun addingToHistory(it: Track) {
-        var history = getTracksHistoryFromSharedPrefs()
-        history = history.filter { track -> track != it }.toTypedArray()
-        history = arrayOf(it) + history
-        history = history.take(MAX_HISTORY_SIZE).toTypedArray()
-        sharedPreferences.edit().putString(HISTORY_TRACKS_KEY, Gson().toJson(history)).apply()
-    }
-
-    private fun createTrackListFromJson(json: String): Array<Track> {
-        return Gson().fromJson(json, Array<Track>::class.java)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(TEXT_VALUE, textValue)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        mEditText.setText(savedInstanceState.getString(TEXT_VALUE))
-    }
-
-    private fun updateHistory() {
-        historyAdapter.tracks = ArrayList(getTracksHistoryFromSharedPrefs().toList())
-        adapter.tracks.clear()
-        adapter.notifyDataSetChanged()
-        historyAdapter.notifyDataSetChanged()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+    private fun initViews() {
         mEditText = findViewById<View>(R.id.Search) as EditText
         mClearText = findViewById<View>(R.id.clearText) as ImageButton
         contentContainer = findViewById<ViewGroup>(R.id.contentContainer) as FrameLayout
         noInternetView = findViewById(R.id.no_internet_view)
         noTracksView = findViewById(R.id.no_music_view)
         historyWithMusic = findViewById(R.id.history_music_list)
+        progressBar = findViewById(R.id.progressBar)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_search)
+        initViews()
 
         sharedPreferences = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
 
@@ -145,8 +117,7 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-        val recyclerMusicHistoryView =
-            findViewById<RecyclerView>(R.id.musicListHistory)
+        val recyclerMusicHistoryView = findViewById<RecyclerView>(R.id.musicListHistory)
         recyclerMusicHistoryView.layoutManager = LinearLayoutManager(this)
         recyclerMusicHistoryView.adapter = historyAdapter
 
@@ -168,9 +139,12 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.length != 0) {
+                    searchDebounce()
                     historyWithMusic.visibility = View.GONE
                     mClearText.visibility = View.VISIBLE
                 } else {
+                    noTracksView.visibility = View.GONE
+                    noInternetView.visibility = View.GONE
                     updateHistory()
                     mClearText.visibility = View.GONE
                     if (historyAdapter.tracks.isEmpty()) {
@@ -184,6 +158,7 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
+
     //clear button onclick
     fun clear(view: View?) {
         mEditText.setText("")
@@ -196,7 +171,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showNoResults() {
-
         tracks.clear()
         adapter.notifyDataSetChanged()
         noTracksView.visibility = View.VISIBLE
@@ -221,20 +195,28 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search() {
+        tracks.clear()
+        adapter.notifyDataSetChanged()
         noTracksView.visibility = View.GONE
         noInternetView.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
         iTunesService.search(mEditText.text.toString())
             .enqueue(object : Callback<SearchTrackResponse> {
                 override fun onResponse(
                     call: Call<SearchTrackResponse>, response: Response<SearchTrackResponse>
                 ) {
                     println("Got response " + response.code())
+                    progressBar.visibility = View.GONE
+                    if (mEditText.text.isEmpty()) {
+                        return
+                    }
                     when (response.code()) {
                         200 -> {
                             if (response.body()?.results?.isNotEmpty() == true) {
                                 tracks.clear()
                                 tracks.addAll(response.body()!!.results)
                                 adapter.notifyDataSetChanged()
+
                             } else {
                                 showNoResults()
                             }
@@ -247,11 +229,79 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<SearchTrackResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
+                    if (mEditText.text.isEmpty()) {
+                        return
+                    }
                     println(t.message)
                     showInternetError()
                 }
-
             })
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
+    private fun playMusic() {
+
+    }
+
+    private fun stopMusic() {
+
+    }
+
+    private fun searchDebounce() {
+
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun showTrack(it: Track) {
+        Log.d("showTrack", it.toString())
+        if (clickDebounce()) {
+            addingToHistory(it)
+            val intent = Intent(this, AudioplayerActivity::class.java)
+            intent.putExtra(KEY_FOR_TRACK, Gson().toJson(it))
+            startActivity(intent)
+        }
+        // TODO: Переход на плеер (в следующих спринтах)
+    }
+
+    private fun addingToHistory(it: Track) {
+        var history = getTracksHistoryFromSharedPrefs()
+        history = history.filter { track -> track != it }.toTypedArray()
+        history = arrayOf(it) + history
+        history = history.take(MAX_HISTORY_SIZE).toTypedArray()
+        sharedPreferences.edit().putString(HISTORY_TRACKS_KEY, Gson().toJson(history)).apply()
+    }
+
+    private fun createTrackListFromJson(json: String): Array<Track> {
+        return Gson().fromJson(json, Array<Track>::class.java)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(TEXT_VALUE, textValue)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        mEditText.setText(savedInstanceState.getString(TEXT_VALUE))
+    }
+
+
+
+    private fun updateHistory() {
+        historyAdapter.tracks = ArrayList(getTracksHistoryFromSharedPrefs().toList())
+        adapter.tracks.clear()
+        adapter.notifyDataSetChanged()
+        historyAdapter.notifyDataSetChanged()
     }
 
 }
