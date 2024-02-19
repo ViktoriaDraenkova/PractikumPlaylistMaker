@@ -5,7 +5,7 @@ import com.practicum.appplaylistmaker.domain.api.TrackRepository
 import com.practicum.appplaylistmaker.domain.models.Track
 
 class TrackInteractorImpl(private val trackRepository: TrackRepository): TrackInteractor {
-    override fun getCurrentTrack(): Track? {
-        return trackRepository.getCurrentTrack()
+    override fun getCurrentTrack(trackJson: String?): Track? {
+        return trackRepository.getCurrentTrack(trackJson)
     }
 }

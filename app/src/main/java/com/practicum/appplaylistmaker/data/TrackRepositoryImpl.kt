@@ -6,12 +6,11 @@ import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.domain.api.TrackRepository
 
-class TrackRepositoryImpl(private var intent: Intent): TrackRepository {
+class TrackRepositoryImpl() : TrackRepository {
 
-    override fun getCurrentTrack(): Track? {
-        val arguments = intent.extras
-        val trackJson: String = arguments?.getString(KEY_FOR_TRACK) ?: return null
+    override fun getCurrentTrack(trackJson: String?): Track? {
 
         return Gson().fromJson(trackJson, Track::class.java)
     }
+
 }

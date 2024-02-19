@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
 import com.practicum.appplaylistmaker.R
 import com.practicum.appplaylistmaker.data.TrackRepositoryImpl
@@ -37,7 +38,7 @@ class AudioplayerActivity : AppCompatActivity() {
     private lateinit var track: Track
     private lateinit var handler: Handler
 
-    private val trackRepository: TrackRepository by lazy { TrackRepositoryImpl(intent) }
+    private val trackRepository: TrackRepository by lazy { TrackRepositoryImpl() }
     private val trackInteractor: TrackInteractor by lazy { TrackInteractorImpl(trackRepository) }
 
     private val updateTimeRunnable = Runnable {
@@ -85,7 +86,9 @@ class AudioplayerActivity : AppCompatActivity() {
     }
 
     private fun initTrack() {
-        track = trackInteractor.getCurrentTrack() ?: return
+        val arguments = intent.extras
+        val trackJson: String? = arguments?.getString(KEY_FOR_TRACK)
+        track = trackInteractor.getCurrentTrack(trackJson) ?: return
 
         val requestOptions =
             RequestOptions().transform(RoundedCorners(8.dpToPx(applicationContext))) // Скругление углов радиусом 2dp
