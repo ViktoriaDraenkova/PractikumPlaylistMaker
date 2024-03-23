@@ -1,4 +1,4 @@
-package com.practicum.appplaylistmaker
+package com.practicum.appplaylistmaker.ui.search.activity
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -21,6 +21,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.practicum.appplaylistmaker.CLICK_DEBOUNCE_DELAY
+import com.practicum.appplaylistmaker.HISTORY_TRACKS_KEY
+import com.practicum.appplaylistmaker.KEY_FOR_TRACK
+import com.practicum.appplaylistmaker.MusicAdapter
+import com.practicum.appplaylistmaker.PRACTICUM_EXAMPLE_PREFERENCES
+import com.practicum.appplaylistmaker.R
 import com.practicum.appplaylistmaker.api.ITunesApi
 import com.practicum.appplaylistmaker.api.SearchTrackResponse
 import com.practicum.appplaylistmaker.domain.models.Track
