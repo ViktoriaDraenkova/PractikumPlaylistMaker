@@ -3,7 +3,7 @@ package com.practicum.appplaylistmaker
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.appplaylistmaker.api.Track
+import com.practicum.appplaylistmaker.domain.models.Track
 
 class MusicAdapter(
     private val clickListener: TrackClickListener

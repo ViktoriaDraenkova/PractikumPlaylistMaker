@@ -2,7 +2,6 @@ package com.practicum.appplaylistmaker
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -24,7 +23,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.practicum.appplaylistmaker.api.ITunesApi
 import com.practicum.appplaylistmaker.api.SearchTrackResponse
-import com.practicum.appplaylistmaker.api.Track
+import com.practicum.appplaylistmaker.domain.models.Track
+import com.practicum.appplaylistmaker.ui.AudioplayerActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

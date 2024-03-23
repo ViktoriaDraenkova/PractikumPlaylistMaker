@@ -1,11 +1,9 @@
-package com.practicum.appplaylistmaker
+package com.practicum.appplaylistmaker.ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,8 +12,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.Gson
-import com.practicum.appplaylistmaker.api.Track
+import com.practicum.appplaylistmaker.KEY_FOR_TRACK
+import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
+import com.practicum.appplaylistmaker.R
+import com.practicum.appplaylistmaker.data.TrackRepositoryImpl
+import com.practicum.appplaylistmaker.domain.api.TrackInteractor
+import com.practicum.appplaylistmaker.domain.models.Track
+import com.practicum.appplaylistmaker.domain.api.TrackRepository
+import com.practicum.appplaylistmaker.domain.impl.TrackInteractorImpl
+import com.practicum.appplaylistmaker.dpToPx
 
 class AudioplayerActivity : AppCompatActivity() {
 
@@ -32,6 +37,9 @@ class AudioplayerActivity : AppCompatActivity() {
     private var mediaPlayer = MediaPlayer()
     private lateinit var track: Track
     private lateinit var handler: Handler
+
+    private val trackRepository: TrackRepository by lazy { TrackRepositoryImpl() }
+    private val trackInteractor: TrackInteractor by lazy { TrackInteractorImpl(trackRepository) }
 
     private val updateTimeRunnable = Runnable {
         updateTime()
@@ -80,7 +88,7 @@ class AudioplayerActivity : AppCompatActivity() {
     private fun initTrack() {
         val arguments = intent.extras
         val trackJson: String? = arguments?.getString(KEY_FOR_TRACK)
-        track = Gson().fromJson(trackJson, Track::class.java)
+        track = trackInteractor.getCurrentTrack(trackJson) ?: return
 
         val requestOptions =
             RequestOptions().transform(RoundedCorners(8.dpToPx(applicationContext))) // Скругление углов радиусом 2dp
@@ -90,17 +98,11 @@ class AudioplayerActivity : AppCompatActivity() {
             .apply(requestOptions).into(trackArtwork)
 
         findViewById<TextView>(R.id.music_name).text = track.trackName
-
         findViewById<TextView>(R.id.music_author).text = track.artistName
-
         findViewById<TextView>(R.id.country_value).text = track.country
-
         findViewById<TextView>(R.id.genre_value).text = track.primaryGenreName
-
         findViewById<TextView>(R.id.year_value).text = track.releaseDate.take(4)
-
         findViewById<TextView>(R.id.album_name_value).text = track.collectionName
-
         findViewById<TextView>(R.id.music_duration_value).text = track.getHumanReadableDuration()
     }
 
