@@ -3,14 +3,13 @@ package com.practicum.appplaylistmaker.ui.settings.activity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toolbar
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.practicum.playlist.ui.settings.view_model.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.practicum.appplaylistmaker.PRACTICUM_EXAMPLE_PREFERENCES
 import com.practicum.appplaylistmaker.R
 
-class SettingsActivity : ComponentActivity() {
+class SettingsActivity : AppCompatActivity() {
     private lateinit var viewModel: SettingsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
 

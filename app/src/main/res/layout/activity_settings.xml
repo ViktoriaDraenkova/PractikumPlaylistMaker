@@ -9,7 +9,8 @@
     android:paddingHorizontal="0dp"
     android:paddingBottom="28dp"
     android:textAllCaps="false"
-    tools:context=".MainActivity">
+    tools:context=".ui.settings.activity.SettingsActivity"
+    android:background="@color/day_white_night_black">
 
     <Toolbar
         android:id="@+id/back"

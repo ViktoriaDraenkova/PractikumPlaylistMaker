@@ -1,4 +1,4 @@
-package com.practicum.appplaylistmaker.ui
+package com.practicum.appplaylistmaker.ui.audioplayer
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -9,54 +9,74 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
 import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
 import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.data.TrackRepositoryImpl
-import com.practicum.appplaylistmaker.domain.api.TrackInteractor
+import com.practicum.appplaylistmaker.data.search.impl.TrackRepositoryImpl
+import com.practicum.appplaylistmaker.domain.search.TrackInteractor
 import com.practicum.appplaylistmaker.domain.models.Track
-import com.practicum.appplaylistmaker.domain.api.TrackRepository
-import com.practicum.appplaylistmaker.domain.impl.TrackInteractorImpl
+import com.practicum.appplaylistmaker.data.search.TrackRepository
+import com.practicum.appplaylistmaker.domain.search.impl.TrackInteractorImpl
 import com.practicum.appplaylistmaker.dpToPx
+import com.practicum.appplaylistmaker.ui.audioplayer.view_model.AudioplayerViewModel
 
 class AudioplayerActivity : AppCompatActivity() {
 
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-    }
 
     private lateinit var musicTimer: TextView
-    private var playerState = STATE_DEFAULT
+    private lateinit var viewModel: AudioplayerViewModel
     private lateinit var buttonPlayStop: ImageButton
-    private var mediaPlayer = MediaPlayer()
-    private lateinit var track: Track
     private lateinit var handler: Handler
 
-    private val trackRepository: TrackRepository by lazy { TrackRepositoryImpl() }
-    private val trackInteractor: TrackInteractor by lazy { TrackInteractorImpl(trackRepository) }
 
     private val updateTimeRunnable = Runnable {
         updateTime()
     }
-
     private fun updateTime() {
-        if (playerState != STATE_PLAYING) {
+        if (viewModel.getPlayerState().value != AudioplayerViewModel.AudioplayerState.STATE_PLAYING) {
             return
         }
-        musicTimer.text = MillisecondsToHumanReadable(mediaPlayer.currentPosition)
+        musicTimer.text = viewModel.getTimeState()
         handler.postDelayed(updateTimeRunnable, 500)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(
+            this,
+            AudioplayerViewModel.getViewModelFactory(getTrack())
+        )[AudioplayerViewModel::class.java]
         setContentView(R.layout.audioplayer_activity)
-        initTrack()
+        initTrack(getTrack())
+
+        viewModel.getPlayerState().observe(this) {
+            playerState ->
+            when (playerState) {
+                AudioplayerViewModel.AudioplayerState.STATE_PAUSED -> {
+                    buttonPlayStop.setBackgroundResource(R.drawable.button_play)
+                    handler.removeCallbacks(updateTimeRunnable)
+                }
+                AudioplayerViewModel.AudioplayerState.STATE_PLAYING -> {
+                    buttonPlayStop.setBackgroundResource(R.drawable.button_stop)
+                    handler.post(updateTimeRunnable)
+                }
+                AudioplayerViewModel.AudioplayerState.STATE_PREPARED -> {
+                    buttonPlayStop.setBackgroundResource(R.drawable.button_play)
+                    buttonPlayStop.isEnabled = true
+                    musicTimer.text = MillisecondsToHumanReadable(0)
+
+                }
+                AudioplayerViewModel.AudioplayerState.STATE_DEFAULT -> {
+                    buttonPlayStop.isEnabled = false
+                }
+            }
+        }
 
         musicTimer = findViewById<TextView>(R.id.time_music)
 
@@ -69,8 +89,6 @@ class AudioplayerActivity : AppCompatActivity() {
         buttonPlayStop.setOnClickListener {
             playbackControl()
         }
-        preparePlayer()
-
         handler = Handler(Looper.getMainLooper())
     }
 
@@ -82,14 +100,15 @@ class AudioplayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(updateTimeRunnable)
-        mediaPlayer.release()
     }
 
-    private fun initTrack() {
+    private fun getTrack(): Track {
         val arguments = intent.extras
         val trackJson: String? = arguments?.getString(KEY_FOR_TRACK)
-        track = trackInteractor.getCurrentTrack(trackJson) ?: return
+        return Gson().fromJson(trackJson, Track::class.java)
+    }
 
+    private fun initTrack(track: Track) {
         val requestOptions =
             RequestOptions().transform(RoundedCorners(8.dpToPx(applicationContext))) // Скругление углов радиусом 2dp
 
@@ -106,43 +125,41 @@ class AudioplayerActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.music_duration_value).text = track.getHumanReadableDuration()
     }
 
-    private fun preparePlayer() {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            buttonPlayStop.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            buttonPlayStop.setBackgroundResource(R.drawable.button_play);
-            musicTimer.text = MillisecondsToHumanReadable(0)
-            handler.removeCallbacks(updateTimeRunnable)
-            playerState = STATE_PREPARED
-        }
-    }
+//    private fun preparePlayer() {
+//        mediaPlayer.setDataSource(track.previewUrl)
+//        mediaPlayer.prepareAsync()
+//        mediaPlayer.setOnPreparedListener {
+//            buttonPlayStop.isEnabled = true
+//            playerState = STATE_PREPARED
+//        }
+//        mediaPlayer.setOnCompletionListener {
+//            buttonPlayStop.setBackgroundResource(R.drawable.button_play);
+//            musicTimer.text = MillisecondsToHumanReadable(0)
+//            handler.removeCallbacks(updateTimeRunnable)
+//            playerState = STATE_PREPARED
+//        }
+//    }
 
     private fun startPlayer() {
-        mediaPlayer.start()
-        playerState = STATE_PLAYING
-        handler.post(updateTimeRunnable)
+        viewModel.startPlayer()
+
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
-        handler.removeCallbacks(updateTimeRunnable)
-        playerState = STATE_PAUSED
+        viewModel.pausePlayer()
     }
 
     private fun playbackControl() {
-        when(playerState) {
-            STATE_PLAYING -> {
-                buttonPlayStop.setBackgroundResource(R.drawable.button_play);
+        when (viewModel.getPlayerState().value) {
+            AudioplayerViewModel.AudioplayerState.STATE_PLAYING -> {
                 pausePlayer()
             }
-            STATE_PREPARED, STATE_PAUSED -> {
-                buttonPlayStop.setBackgroundResource(R.drawable.button_stop);
+
+            AudioplayerViewModel.AudioplayerState.STATE_PREPARED, AudioplayerViewModel.AudioplayerState.STATE_PAUSED -> {
                 startPlayer()
             }
+
+            else -> {}
         }
     }
 

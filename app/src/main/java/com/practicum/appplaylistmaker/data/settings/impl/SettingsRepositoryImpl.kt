@@ -14,15 +14,10 @@ class SettingsRepositoryImpl(
         const val THEME_SWITCHER_KEY = "key_for_theme_switcher"
     }
 
-    private fun initLala(): SharedPreferences {
-        Log.d("", (context).toString())
-        return context.getSharedPreferences(
-            PRACTICUM_EXAMPLE_PREFERENCES,
-            ComponentActivity.MODE_PRIVATE
-        )
-    }
-
-    private var sharedPrefs: SharedPreferences = initLala()
+    private var sharedPrefs: SharedPreferences = context.getSharedPreferences(
+        PRACTICUM_EXAMPLE_PREFERENCES,
+        ComponentActivity.MODE_PRIVATE
+    )
 
     override fun getTheme(): Boolean {
         return sharedPrefs.getBoolean(THEME_SWITCHER_KEY, false)
