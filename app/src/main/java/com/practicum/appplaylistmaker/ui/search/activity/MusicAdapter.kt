@@ -1,8 +1,9 @@
-package com.practicum.appplaylistmaker
+package com.practicum.appplaylistmaker.ui.search.activity
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.appplaylistmaker.R
 import com.practicum.appplaylistmaker.domain.models.Track
 
 class MusicAdapter(

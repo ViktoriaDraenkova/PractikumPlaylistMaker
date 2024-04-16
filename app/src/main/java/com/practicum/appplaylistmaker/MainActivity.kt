@@ -4,15 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.practicum.appplaylistmaker.ui.media.activity.MediaActivity
+import com.practicum.appplaylistmaker.ui.search.activity.SearchActivity
+import com.practicum.appplaylistmaker.ui.settings.activity.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val sharedPrefs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
-        val isDarkTheme = sharedPrefs.getBoolean(THEME_SWITCHER_KEY, false)
-        (applicationContext as? App)?.switchTheme(isDarkTheme)
 
         val buttonSearch = findViewById<Button>(R.id.button_search)
         buttonSearch.setOnClickListener {
