@@ -1,6 +1,5 @@
 package com.practicum.appplaylistmaker.ui.audioplayer
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,8 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -18,11 +15,8 @@ import com.google.gson.Gson
 import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
 import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.data.search.impl.TrackRepositoryImpl
-import com.practicum.appplaylistmaker.domain.search.TrackInteractor
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.practicum.appplaylistmaker.domain.models.Track
-import com.practicum.appplaylistmaker.data.search.TrackRepository
-import com.practicum.appplaylistmaker.domain.search.impl.TrackInteractorImpl
 import com.practicum.appplaylistmaker.dpToPx
 import com.practicum.appplaylistmaker.ui.audioplayer.view_model.AudioplayerViewModel
 
@@ -30,14 +24,14 @@ class AudioplayerActivity : AppCompatActivity() {
 
 
     private lateinit var musicTimer: TextView
-    private lateinit var viewModel: AudioplayerViewModel
     private lateinit var buttonPlayStop: ImageButton
     private lateinit var handler: Handler
-
+    private val viewModel: AudioplayerViewModel by viewModel()
 
     private val updateTimeRunnable = Runnable {
         updateTime()
     }
+
     private fun updateTime() {
         if (viewModel.getPlayerState().value != AudioplayerViewModel.AudioplayerState.STATE_PLAYING) {
             return
@@ -48,30 +42,29 @@ class AudioplayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(
-            this,
-            AudioplayerViewModel.getViewModelFactory(getTrack())
-        )[AudioplayerViewModel::class.java]
+
         setContentView(R.layout.audioplayer_activity)
         initTrack(getTrack())
 
-        viewModel.getPlayerState().observe(this) {
-            playerState ->
+        viewModel.getPlayerState().observe(this) { playerState ->
             when (playerState) {
                 AudioplayerViewModel.AudioplayerState.STATE_PAUSED -> {
                     buttonPlayStop.setBackgroundResource(R.drawable.button_play)
                     handler.removeCallbacks(updateTimeRunnable)
                 }
+
                 AudioplayerViewModel.AudioplayerState.STATE_PLAYING -> {
                     buttonPlayStop.setBackgroundResource(R.drawable.button_stop)
                     handler.post(updateTimeRunnable)
                 }
+
                 AudioplayerViewModel.AudioplayerState.STATE_PREPARED -> {
                     buttonPlayStop.setBackgroundResource(R.drawable.button_play)
                     buttonPlayStop.isEnabled = true
                     musicTimer.text = MillisecondsToHumanReadable(0)
 
                 }
+
                 AudioplayerViewModel.AudioplayerState.STATE_DEFAULT -> {
                     buttonPlayStop.isEnabled = false
                 }

@@ -37,20 +37,6 @@ class AudioplayerViewModel(
 
     private var playerState = MutableLiveData<AudioplayerState>(AudioplayerState.STATE_DEFAULT)
 
-
-    companion object {
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                // 1
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return AudioplayerViewModel(
-                        track, Creator.getAudioplayerInteractor()
-                    ) as T
-                }
-            }
-    }
-
     fun getPlayerState(): LiveData<AudioplayerState> {
         return playerState
     }

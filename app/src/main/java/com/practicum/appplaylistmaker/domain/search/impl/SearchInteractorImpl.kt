@@ -8,7 +8,7 @@ import com.practicum.appplaylistmaker.domain.search.SearchInteractor
 class SearchInteractorImpl(var trackHistoryRepository: TrackHistoryRepository, var trackRepository: TrackRepository) : SearchInteractor {
     override fun searchTrack(
         trackName: String,
-        onSuccess: (tracks: ArrayList<Track>) -> Unit,
+        onSuccess: (tracks: List<Track>) -> Unit,
         onFailure: () -> Unit
     ) {
         trackRepository.search(trackName, onSuccess, onFailure)
@@ -18,7 +18,7 @@ class SearchInteractorImpl(var trackHistoryRepository: TrackHistoryRepository, v
         trackHistoryRepository.clearTracks()
     }
 
-    override fun getTracksHistory(): ArrayList<Track> {
+    override fun getTracksHistory(): List<Track> {
         return trackHistoryRepository.getTracks()
     }
 

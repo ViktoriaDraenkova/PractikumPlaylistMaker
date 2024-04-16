@@ -1,9 +1,6 @@
-package com.practicum.appplaylistmaker.creator
+package com.practicum.appplaylistmaker.di
 
-import android.app.Application
 import android.content.Context
-import android.util.Log
-import com.practicum.appplaylistmaker.data.audioplayer.Audioplayer
 import com.practicum.appplaylistmaker.data.audioplayer.impl.AudioplayerImpl
 import com.practicum.appplaylistmaker.data.search.TrackHistoryRepository
 import com.practicum.appplaylistmaker.data.search.TrackRepository
@@ -19,10 +16,24 @@ import com.practicum.appplaylistmaker.domain.search.SearchInteractor
 import com.practicum.appplaylistmaker.domain.search.impl.SearchInteractorImpl
 import com.practicum.appplaylistmaker.domain.settings.SettingsInteractor
 import com.practicum.appplaylistmaker.domain.settings.impl.SettingsInteractorImpl
-import com.practicum.appplaylistmaker.domain.sharing.SharingInteractor
 import com.practicum.appplaylistmaker.domain.sharing.impl.SharingInteractorImpl
+import org.koin.dsl.module
 
-object Creator {
+val interactorModule = module {
+    single<SettingsInteractor> {
+        SettingsInteractorImpl(get())
+    }
 
+    single {
+        SharingInteractorImpl(get())
+    }
+
+    single {
+        SearchInteractorImpl(get(), get())
+    }
+
+    single {
+        AudioplayerInteractorImpl(get())
+    }
 
 }
