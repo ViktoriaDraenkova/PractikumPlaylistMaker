@@ -2,6 +2,8 @@ package com.practicum.appplaylistmaker.data.search.impl
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import android.util.Log.d
 import androidx.activity.ComponentActivity
 import com.google.gson.Gson
 import com.practicum.appplaylistmaker.HISTORY_TRACKS_KEY
@@ -17,6 +19,7 @@ class TrackHistoryRepositoryImpl( val sharedPreferences: SharedPreferences) : Tr
     override fun getTracks(): List<Track> {
         val tracksHistory = sharedPreferences.getString(HISTORY_TRACKS_KEY, null)
         if (tracksHistory != null) {
+            Log.d("getTracks ______________", (createTrackListFromJson(tracksHistory)).toString())
             return createTrackListFromJson(tracksHistory)
         }
         return arrayListOf()
@@ -27,8 +30,10 @@ class TrackHistoryRepositoryImpl( val sharedPreferences: SharedPreferences) : Tr
 
     override fun pushTrack(track: Track) {
         var history = getTracks()
+
         history = history.filter { currentTrack -> currentTrack != track }
-        history.toMutableList().add(0, track)
+        history = history.toMutableList()
+        history.add(0, track)
         history = ArrayList(history.take(MAX_HISTORY_SIZE) )
         sharedPreferences.edit().putString(HISTORY_TRACKS_KEY, Gson().toJson(history)).apply()
     }

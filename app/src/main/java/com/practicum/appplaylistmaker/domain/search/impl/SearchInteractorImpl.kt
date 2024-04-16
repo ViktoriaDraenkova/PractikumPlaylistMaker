@@ -1,5 +1,6 @@
 package com.practicum.appplaylistmaker.domain.search.impl
 
+import android.util.Log
 import com.practicum.appplaylistmaker.data.search.TrackHistoryRepository
 import com.practicum.appplaylistmaker.data.search.TrackRepository
 import com.practicum.appplaylistmaker.domain.models.Track
@@ -12,6 +13,8 @@ class SearchInteractorImpl(var trackHistoryRepository: TrackHistoryRepository, v
         onFailure: () -> Unit
     ) {
         trackRepository.search(trackName, onSuccess, onFailure)
+
+
     }
 
     override fun clearTrackHistory() {

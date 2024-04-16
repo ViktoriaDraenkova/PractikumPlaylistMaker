@@ -3,20 +3,15 @@ package com.practicum.appplaylistmaker.ui.audioplayer.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
-import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.creator.Creator
 import com.practicum.appplaylistmaker.domain.audioplayer.AudioplayerInteractor
 import com.practicum.appplaylistmaker.domain.models.Track
-import com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity
 
 class AudioplayerViewModel(
-    val track: Track,
+
     private val audioplayerInteractor: AudioplayerInteractor
 ) : ViewModel() {
 
-    init {
+    fun setTrack(track: Track) {
         audioplayerInteractor.prepareTrack(
             track,
             {

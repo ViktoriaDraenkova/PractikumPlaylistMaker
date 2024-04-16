@@ -4,6 +4,9 @@ import android.media.MediaPlayer
 import androidx.activity.ComponentActivity
 import com.practicum.appplaylistmaker.PRACTICUM_EXAMPLE_PREFERENCES
 import com.practicum.appplaylistmaker.api.ITunesApi
+import com.practicum.appplaylistmaker.data.audioplayer.Audioplayer
+import com.practicum.appplaylistmaker.data.audioplayer.impl.AudioplayerImpl
+import com.practicum.appplaylistmaker.data.sharing.ExternalNavigation
 import com.practicum.appplaylistmaker.data.sharing.impl.ExternalNavigationImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -15,6 +18,10 @@ val dataModule = module {
 
     single {
         MediaPlayer()
+    }
+
+    single<Audioplayer>{
+        AudioplayerImpl(get())
     }
 
     single {
@@ -32,11 +39,7 @@ val dataModule = module {
             .create(ITunesApi::class.java)
     }
 
-    single {
-        androidContext()
-    }
-
-    single {
+    single<ExternalNavigation> {
         ExternalNavigationImpl(get())
     }
 

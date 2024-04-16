@@ -15,7 +15,6 @@ class SettingsActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-
         setContentView(R.layout.activity_settings)
 
         val buttonBack = findViewById<Toolbar>(R.id.back)
@@ -25,7 +24,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
         themeSwitcher.isChecked = viewModel.getTheme()
-        viewModel.initTheme()
+        viewModel.setTheme(themeSwitcher.isChecked)
 
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.setTheme(checked)

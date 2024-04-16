@@ -105,6 +105,8 @@ class AudioplayerActivity : AppCompatActivity() {
         val requestOptions =
             RequestOptions().transform(RoundedCorners(8.dpToPx(applicationContext))) // Скругление углов радиусом 2dp
 
+        viewModel.setTrack(track)
+
         val trackArtwork = findViewById<ImageView>(R.id.music_icon)
         Glide.with(applicationContext).load(track.getArtWorkUrl512()).error(R.drawable.placeholder)
             .apply(requestOptions).into(trackArtwork)
