@@ -10,7 +10,7 @@ class MusicAdapter(
     private val clickListener: TrackClickListener
 ) : RecyclerView.Adapter<MusicViewHolder> () {
 
-    var tracks = ArrayList<Track>()
+    var tracks = emptyList<Track>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.little_music_view, parent, false)
@@ -19,7 +19,7 @@ class MusicAdapter(
 
     override fun onBindViewHolder(holder: MusicViewHolder, position: Int) {
         holder.bind(tracks[position])
-        holder.itemView.setOnClickListener { clickListener.onTrackClick(tracks.get(position)) }
+        holder.itemView.setOnClickListener { clickListener.onTrackClick(tracks[position]) }
     }
 
     override fun getItemCount() = tracks.size

@@ -5,10 +5,10 @@ import com.practicum.appplaylistmaker.domain.models.Track
 interface SearchInteractor {
 
     fun searchTrack(trackName: String,
-                    onSuccess: (tracks: ArrayList<Track>) -> Unit,
+                    onSuccess: (tracks: List<Track>) -> Unit,
                     onFailure: () -> Unit)
 
     fun clearTrackHistory()
-    fun getTracksHistory(): ArrayList<Track>
+    fun getTracksHistory(): List<Track>
     fun addTrackToHistory(track: Track)
 }

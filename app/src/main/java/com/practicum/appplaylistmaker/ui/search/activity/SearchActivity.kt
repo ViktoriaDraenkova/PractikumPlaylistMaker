@@ -18,13 +18,13 @@ import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.practicum.appplaylistmaker.CLICK_DEBOUNCE_DELAY
 import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.R
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity
 import com.practicum.appplaylistmaker.ui.search.view_model.SearchViewModel
@@ -37,7 +37,6 @@ class SearchActivity : AppCompatActivity() {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
-    private lateinit var viewModel: SearchViewModel
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
@@ -49,6 +48,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var noInternetView: View
     private lateinit var progressBar: ProgressBar
     private lateinit var historyWithMusic: ViewGroup
+    private val viewModel: SearchViewModel by viewModel()
 
     private val adapter = MusicAdapter {
         showTrack(it)
@@ -76,10 +76,6 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         initViews()
 
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
         viewModel.getTracksLiveData().observe(this) { tracks ->
             adapter.tracks = tracks
             adapter.notifyDataSetChanged()

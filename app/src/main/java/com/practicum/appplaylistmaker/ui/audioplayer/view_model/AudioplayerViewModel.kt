@@ -3,20 +3,15 @@ package com.practicum.appplaylistmaker.ui.audioplayer.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
-import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.creator.Creator
 import com.practicum.appplaylistmaker.domain.audioplayer.AudioplayerInteractor
 import com.practicum.appplaylistmaker.domain.models.Track
-import com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity
 
 class AudioplayerViewModel(
-    val track: Track,
+
     private val audioplayerInteractor: AudioplayerInteractor
 ) : ViewModel() {
 
-    init {
+    fun setTrack(track: Track) {
         audioplayerInteractor.prepareTrack(
             track,
             {
@@ -36,20 +31,6 @@ class AudioplayerViewModel(
     }
 
     private var playerState = MutableLiveData<AudioplayerState>(AudioplayerState.STATE_DEFAULT)
-
-
-    companion object {
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                // 1
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return AudioplayerViewModel(
-                        track, Creator.getAudioplayerInteractor()
-                    ) as T
-                }
-            }
-    }
 
     fun getPlayerState(): LiveData<AudioplayerState> {
         return playerState

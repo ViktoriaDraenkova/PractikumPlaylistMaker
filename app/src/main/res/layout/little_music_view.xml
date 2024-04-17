@@ -36,12 +36,6 @@
         app:layout_constraintTop_toTopOf="@+id/soundImage"
         tools:text="Название трека" />
 
-    <LinearLayout
-        app:layout_constraintLeft_toRightOf="@id/soundImage"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="34dp">
 
         <TextView
             android:id="@+id/soundAuthor"
@@ -51,28 +45,40 @@
             android:fontFamily="@font/ys_text_regular"
             android:textColor="@color/day_gray_night_white"
             android:textSize="11sp"
-            tools:text="Исполнитель" />
+            tools:text="Исполнитель"
+            app:layout_constraintTop_toBottomOf="@id/soundName"
+            app:layout_constraintStart_toStartOf="@id/soundName"
+
+            />
 
         <ImageView
             android:id="@+id/sourceImage"
             android:layout_width="3dp"
             android:layout_height="3dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginHorizontal="5dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/circle_delimiter" />
+            android:src="@drawable/circle_delimiter"
+            app:layout_constraintTop_toTopOf="@id/soundAuthor"
+            app:layout_constraintBottom_toBottomOf="@id/soundAuthor"
+            app:layout_constraintStart_toEndOf="@id/soundAuthor"
+
+            />
 
         <TextView
+            android:layout_marginStart="5dp"
             android:id="@+id/soundDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ys_text_regular"
             android:textColor="@color/day_gray_night_white"
             android:textSize="11sp"
-            tools:text="Время" />
-    </LinearLayout>
+            tools:text="Время"
+            app:layout_constraintTop_toBottomOf="@id/soundName"
+            app:layout_constraintStart_toEndOf="@id/sourceImage"
+            />
+
 
     <ImageButton
         android:id="@+id/sourceImage3"

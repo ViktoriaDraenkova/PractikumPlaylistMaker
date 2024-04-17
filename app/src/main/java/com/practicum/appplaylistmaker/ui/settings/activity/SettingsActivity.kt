@@ -4,20 +4,16 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.example.practicum.playlist.ui.settings.view_model.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.practicum.appplaylistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(
-            this,
-            SettingsViewModel.getViewModelFactory()
-        )[SettingsViewModel::class.java]
 
         setContentView(R.layout.activity_settings)
 
@@ -28,7 +24,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
         themeSwitcher.isChecked = viewModel.getTheme()
-        viewModel.initTheme()
+        viewModel.setTheme(themeSwitcher.isChecked)
 
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.setTheme(checked)

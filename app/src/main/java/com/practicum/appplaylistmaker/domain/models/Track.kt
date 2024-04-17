@@ -6,6 +6,7 @@ import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
 data class Track(
     val trackId: Int,
     val trackName: String,
+    @SerializedName("artistName")
     val artistName: String,
     @SerializedName("trackTimeMillis")
     val trackTime: Int,
