@@ -27,7 +27,9 @@
         app:tabIndicatorColor="@color/day_black_night_white"
         app:tabTextColor="@color/day_black_night_white"
         tools:ignore="SpeakableTextPresentCheck"
-
+        app:tabIndicatorHeight="2dp"
+        app:tabIndicator="@drawable/indicator_148"
+        app:tabBackground="@color/day_white_night_black"
         />
 
     <androidx.viewpager2.widget.ViewPager2
