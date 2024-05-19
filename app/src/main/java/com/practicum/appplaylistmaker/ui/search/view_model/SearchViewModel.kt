@@ -3,10 +3,6 @@ package com.practicum.appplaylistmaker.ui.search.view_model;
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.practicum.appplaylistmaker.App
-import com.practicum.appplaylistmaker.creator.Creator
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.domain.search.SearchInteractor
 

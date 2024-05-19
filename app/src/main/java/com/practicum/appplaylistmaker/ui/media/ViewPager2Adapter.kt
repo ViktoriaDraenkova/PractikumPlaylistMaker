@@ -14,8 +14,8 @@ class ViewPager2Adapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> NFragment.newInstance("Ваша медиатека пуста", buttonVisibility = false)
-            else -> NFragment.newInstance("Вы не создали\nни одного плейлиста", buttonVisibility = true)
+            0 -> FavouriteTracksFragment()
+            else -> PlaylistFragment()
         }
     }
 }
