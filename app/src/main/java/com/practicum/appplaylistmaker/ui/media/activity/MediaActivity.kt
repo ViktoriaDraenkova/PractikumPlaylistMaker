@@ -2,19 +2,43 @@ package com.practicum.appplaylistmaker.ui.media.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
+import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.appplaylistmaker.R
+import com.practicum.appplaylistmaker.databinding.ActivityMediaBinding
+import com.practicum.appplaylistmaker.ui.media.ViewPager2Adapter
+import com.practicum.appplaylistmaker.ui.media.view_model.PlaylistsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMediaBinding
+    private lateinit var tabMediator:TabLayoutMediator
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_media)
+
+        binding = ActivityMediaBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.viewPager2.adapter = ViewPager2Adapter(supportFragmentManager, lifecycle)
+        tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
+            when(position) {
+                0 -> tab.setText(R.string.favourite_tracks)
+                else -> tab.setText(R.string.playlists)
+            }
+        }
+        tabMediator.attach()
+
+        binding.back.setNavigationOnClickListener {
+            finish()
+        }
+
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
-        outState.putString("ds","fdfd")
+    override fun onDestroy() {
+        super.onDestroy()
+        tabMediator.detach()
     }
 
 
