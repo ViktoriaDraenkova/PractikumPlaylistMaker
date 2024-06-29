@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/day_white_night_black"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.media.activity.MediaFragment">
 
     <Toolbar
         android:id="@+id/back"
@@ -13,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
         android:contentInsetStartWithNavigation="0dp"
-        android:navigationIcon="@drawable/strelka"
         android:title="@string/media"
         android:titleTextAppearance="@style/ToolbarTitleText"
         app:theme="@style/ToolbarColoredBackArrow"

@@ -9,7 +9,7 @@
     android:paddingHorizontal="0dp"
     android:paddingBottom="28dp"
     android:textAllCaps="false"
-    tools:context=".ui.settings.activity.SettingsActivity"
+    tools:context=".ui.settings.activity.SettingsFragment"
     android:background="@color/day_white_night_black">
 
     <Toolbar
@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:contentInsetStartWithNavigation="0dp"
-        android:navigationIcon="@drawable/strelka"
         android:title="@string/settings"
         android:titleTextAppearance="@style/ToolbarTitleText"
         app:theme="@style/ToolbarColoredBackArrow" />
