@@ -12,24 +12,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.practicum.appplaylistmaker.CLICK_DEBOUNCE_DELAY
 import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.databinding.FragmentMediaBinding
 import com.practicum.appplaylistmaker.databinding.FragmentSearchBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity
 import com.practicum.appplaylistmaker.ui.search.view_model.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchFragment : Fragment() {
@@ -50,6 +48,7 @@ class SearchFragment : Fragment() {
     private lateinit var noInternetView: View
     private lateinit var progressBar: ProgressBar
     private lateinit var historyWithMusic: ViewGroup
+    private lateinit var musicListView: View
     private val viewModel: SearchViewModel by viewModel()
 
     private val adapter = MusicAdapter {
@@ -65,6 +64,7 @@ class SearchFragment : Fragment() {
         mEditText = binding.Search
         mClearText = binding.clearText
         contentContainer = binding.contentContainer
+        musicListView = binding.musicList
         noInternetView = binding.noInternetView
         noTracksView = binding.noMusicView
         historyWithMusic = binding.historyMusicList
@@ -77,15 +77,13 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("AAAAAAAAAAA", "SOZDAyotsa")
-        binding = FragmentSearchBinding.inflate(layoutInflater)
+        binding = FragmentSearchBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        Log.d("AAAAAAAAAAA", "SOZDALOSA")
 
         viewModel.getTracksLiveData().observe(viewLifecycleOwner) { tracks ->
             adapter.tracks = tracks
@@ -100,16 +98,13 @@ class SearchFragment : Fragment() {
             historyWithMusic.visibility = View.GONE
             noInternetView.visibility = View.GONE
             noTracksView.visibility = View.GONE
-            Log.d("Logs of view!!!!", screenState.value)
+            musicListView.visibility = View.GONE
 
             adapter.notifyDataSetChanged()
             when (screenState) {
                 SearchViewModel.ScreenState.LOADING -> progressBar.visibility = View.VISIBLE
-                SearchViewModel.ScreenState.HISTORY -> {
-                    historyWithMusic.visibility = View.VISIBLE
-                    Log.d("Logs of view!!!!", screenState.value)
-                }
-
+                SearchViewModel.ScreenState.HISTORY -> historyWithMusic.visibility = View.VISIBLE
+                SearchViewModel.ScreenState.LOADED -> musicListView.visibility = View.VISIBLE
                 SearchViewModel.ScreenState.NO_INTERNET -> noInternetView.visibility = View.VISIBLE
                 SearchViewModel.ScreenState.NO_RESULTS -> noTracksView.visibility = View.VISIBLE
                 else -> {}
@@ -119,9 +114,13 @@ class SearchFragment : Fragment() {
         binding.buttonClean.setOnClickListener {
             viewModel.clearTrackHistory()
         }
-        binding.buttonUpdate.setOnClickListener {
+
+        val buttonUpdate = view.findViewById<Button>(R.id.button_update)
+
+        buttonUpdate.setOnClickListener {
             search()
         }
+
 
         mEditText.setOnFocusChangeListener { _, hasFocus ->
 
@@ -152,7 +151,7 @@ class SearchFragment : Fragment() {
         mClearText.setOnClickListener {
             mEditText.setText("")
         }
-        mClearText.visibility = View.INVISIBLE
+        mClearText.visibility = View.GONE
         mEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
             }
@@ -176,6 +175,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun search() {
+        Log.d("AAAAAAAA", "ISCHU!!!!!!!")
+
         viewModel.search(mEditText.text.toString())
     }
 

@@ -5,12 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/day_white_night_black"
     android:orientation="vertical"
     android:paddingHorizontal="0dp"
     android:paddingBottom="28dp"
     android:textAllCaps="false"
-    tools:context=".ui.settings.activity.SettingsFragment"
-    android:background="@color/day_white_night_black">
+    tools:context=".ui.settings.activity.SettingsFragment">
 
     <Toolbar
         android:id="@+id/back"
@@ -23,10 +23,10 @@
         app:theme="@style/ToolbarColoredBackArrow" />
 
 
-
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitcher"
         style="@style/MySwitchStyle"
+        android:fontFamily="@font/ys_text_regular"
         android:text="@string/dark" />
 
 
@@ -40,7 +40,9 @@
         android:id="@+id/button_to_support"
         style="@style/SettingsButtonsStyle"
         android:text="@string/tosupp"
-        app:icon="@drawable/group" />
+        app:icon="@drawable/group"
+
+        />
 
     <Button
         android:id="@+id/button_user_agreement"
