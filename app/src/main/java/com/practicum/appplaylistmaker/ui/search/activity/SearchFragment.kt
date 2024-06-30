@@ -8,6 +8,7 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -16,28 +17,27 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
-import android.widget.Toolbar
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.practicum.appplaylistmaker.CLICK_DEBOUNCE_DELAY
 import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.R
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.practicum.appplaylistmaker.databinding.FragmentSearchBinding
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity
 import com.practicum.appplaylistmaker.ui.search.view_model.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
     companion object {
         const val TEXT_VALUE = "TEXT_VALUE"
         const val AMOUNT_DEF = ""
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
-
+    private lateinit var binding: FragmentSearchBinding
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var mEditText: EditText
@@ -48,6 +48,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var noInternetView: View
     private lateinit var progressBar: ProgressBar
     private lateinit var historyWithMusic: ViewGroup
+    private lateinit var musicListView: View
     private val viewModel: SearchViewModel by viewModel()
 
     private val adapter = MusicAdapter {
@@ -60,60 +61,69 @@ class SearchActivity : AppCompatActivity() {
     private val searchRunnable = Runnable { search() }
 
     private fun initViews() {
-        mEditText = findViewById<View>(R.id.Search) as EditText
-        mClearText = findViewById<View>(R.id.clearText) as ImageButton
-        contentContainer = findViewById<ViewGroup>(R.id.contentContainer) as FrameLayout
-        noInternetView = findViewById(R.id.no_internet_view)
-        noTracksView = findViewById(R.id.no_music_view)
-        historyWithMusic = findViewById(R.id.history_music_list)
-        progressBar = findViewById(R.id.progressBar)
+        mEditText = binding.Search
+        mClearText = binding.clearText
+        contentContainer = binding.contentContainer
+        musicListView = binding.musicList
+        noInternetView = binding.noInternetView
+        noTracksView = binding.noMusicView
+        historyWithMusic = binding.historyMusicList
+        progressBar = binding.progressBar
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater)
+        return binding.root
+    }
 
-        setContentView(R.layout.activity_search)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initViews()
 
-        viewModel.getTracksLiveData().observe(this) { tracks ->
+        viewModel.getTracksLiveData().observe(viewLifecycleOwner) { tracks ->
             adapter.tracks = tracks
             adapter.notifyDataSetChanged()
         }
-        viewModel.getTracksHistoryLiveData().observe(this) { history ->
+        viewModel.getTracksHistoryLiveData().observe(viewLifecycleOwner) { history ->
             historyAdapter.tracks = history
             historyAdapter.notifyDataSetChanged()
         }
-        viewModel.getScreenStateLiveData().observe(this) { screenState ->
+        viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
             progressBar.visibility = View.GONE
             historyWithMusic.visibility = View.GONE
             noInternetView.visibility = View.GONE
             noTracksView.visibility = View.GONE
-            Log.d("Logs of view!!!!", screenState.value)
+            musicListView.visibility = View.GONE
 
             adapter.notifyDataSetChanged()
             when (screenState) {
                 SearchViewModel.ScreenState.LOADING -> progressBar.visibility = View.VISIBLE
-                SearchViewModel.ScreenState.HISTORY -> {historyWithMusic.visibility = View.VISIBLE
-                    Log.d("Logs of view!!!!", screenState.value)
-                }
+                SearchViewModel.ScreenState.HISTORY -> historyWithMusic.visibility = View.VISIBLE
+                SearchViewModel.ScreenState.LOADED -> musicListView.visibility = View.VISIBLE
                 SearchViewModel.ScreenState.NO_INTERNET -> noInternetView.visibility = View.VISIBLE
                 SearchViewModel.ScreenState.NO_RESULTS -> noTracksView.visibility = View.VISIBLE
                 else -> {}
             }
         }
 
-        val buttonClearHistory: Button? = findViewById(R.id.button_clean)
-        buttonClearHistory?.setOnClickListener {
+        binding.buttonClean.setOnClickListener {
             viewModel.clearTrackHistory()
         }
 
-        val buttonUpdate: Button? = findViewById(R.id.button_update)
-        buttonUpdate?.setOnClickListener {
+        val buttonUpdate = view.findViewById<Button>(R.id.button_update)
+
+        buttonUpdate.setOnClickListener {
             search()
         }
 
+
         mEditText.setOnFocusChangeListener { _, hasFocus ->
+
             if (hasFocus && mEditText.text.isEmpty()) {
                 viewModel.showHistory()
             }
@@ -127,25 +137,21 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
-        val buttonBack = findViewById<Toolbar>(R.id.back)
-        buttonBack.setNavigationOnClickListener {
-            finish()
-        }
 
-        val recyclerMusicHistoryView = findViewById<RecyclerView>(R.id.musicListHistory)
-        recyclerMusicHistoryView.layoutManager = LinearLayoutManager(this)
+        val recyclerMusicHistoryView = binding.musicListHistory
+        recyclerMusicHistoryView.layoutManager = LinearLayoutManager(requireContext())
         recyclerMusicHistoryView.adapter = historyAdapter
         historyAdapter.tracks = viewModel.getTracksHistoryLiveData().value ?: ArrayList<Track>()
 
-        val recyclerMusicView = findViewById<RecyclerView>(R.id.music_list)
+        val recyclerMusicView = binding.musicList
         adapter.tracks = viewModel.getTracksLiveData().value ?: ArrayList<Track>()
-        recyclerMusicView.layoutManager = LinearLayoutManager(this)
+        recyclerMusicView.layoutManager = LinearLayoutManager(requireContext())
         recyclerMusicView.adapter = adapter
 
         mClearText.setOnClickListener {
             mEditText.setText("")
         }
-        mClearText.visibility = View.INVISIBLE
+        mClearText.visibility = View.GONE
         mEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
             }
@@ -169,6 +175,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search() {
+        Log.d("AAAAAAAA", "ISCHU!!!!!!!")
+
         viewModel.search(mEditText.text.toString())
     }
 
@@ -189,7 +197,7 @@ class SearchActivity : AppCompatActivity() {
     private fun showTrack(it: Track) {
         if (clickDebounce()) {
             viewModel.addTrackToHistory(it)
-            val intent = Intent(this, AudioplayerActivity::class.java)
+            val intent = Intent(requireContext(), AudioplayerActivity::class.java)
             intent.putExtra(KEY_FOR_TRACK, Gson().toJson(it))
             startActivity(intent)
         }
@@ -200,9 +208,15 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(TEXT_VALUE, textValue)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        mEditText.setText(savedInstanceState.getString(TEXT_VALUE))
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            mEditText.setText(savedInstanceState.getString(TEXT_VALUE))
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
 }

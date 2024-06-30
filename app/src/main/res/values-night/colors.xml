@@ -13,6 +13,7 @@
     <color name="day_white_night_black">#1A1B22</color>
     <color name="day_gray_night_blue">#3772E7</color>
     <color name="day_light_gray_night_light_blue">#9FBBF3</color>
+    <color name="day_gray_night_black">#FF000000</color>
 
 
 

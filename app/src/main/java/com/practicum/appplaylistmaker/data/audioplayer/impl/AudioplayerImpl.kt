@@ -24,6 +24,7 @@ class AudioplayerImpl(private val mediaPlayer: MediaPlayer) : Audioplayer {
         onCompletionListener: () -> Unit
     ) {
         this.track = track
+        mediaPlayer.reset()
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
