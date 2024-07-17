@@ -4,20 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    tools:context=".ui.audioplayer.AudioplayerActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="20dp"
-        >
+        android:paddingBottom="20dp">
 
         <Toolbar
             android:id="@+id/back_to_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentInsetStartWithNavigation="0dp"
-            android:navigationIcon="@drawable/strelka"
+            android:navigationIcon="@drawable/back_icon"
             android:titleTextAppearance="@style/ToolbarTitleText"
             app:theme="@style/ToolbarColoredBackArrow"
             tools:ignore="MissingConstraints" />
@@ -78,12 +77,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/button_play"
+            android:backgroundTint="@drawable/enabled_disabled_selector"
             android:contentDescription="@string/play_music"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/music_author"
-            android:enabled="false"
-            android:backgroundTint="@drawable/enabled_disabled_selector"/>
+            app:layout_constraintTop_toBottomOf="@+id/music_author" />
 
         <ImageButton
             android:layout_width="wrap_content"

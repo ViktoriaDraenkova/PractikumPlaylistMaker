@@ -5,7 +5,8 @@
     android:layout_height="61dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    tools:context="ui.search.activity.SearchFragment">
 
     <ImageView
         android:id="@+id/soundImage"

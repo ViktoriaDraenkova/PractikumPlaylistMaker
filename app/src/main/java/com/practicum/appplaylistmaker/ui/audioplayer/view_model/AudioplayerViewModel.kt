@@ -12,6 +12,7 @@ class AudioplayerViewModel(
 ) : ViewModel() {
 
     fun setTrack(track: Track) {
+        pausePlayer()
         audioplayerInteractor.prepareTrack(
             track,
             {

@@ -40,6 +40,7 @@
         <item name="iconPadding">12dp</item>
         <item name="iconTint">?attr/colorOnPrimary</item>
         <item name="android:fontFamily">@font/ys_text_regular</item>
+        <item name="android:letterSpacing">0.01</item>
     </style>
 
     <style name="ToolbarTitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">

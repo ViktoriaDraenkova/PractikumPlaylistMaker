@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/big_lupa"
+        android:title="@string/search"
+        />
+    <item
+        android:id="@+id/mediaFragment"
+        android:icon="@drawable/mediateka"
+        android:title="@string/media" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/settings_icon"
+        android:title="@string/settings" />
+</menu>
+    <!--    <Button-->
+    <!--        android:id="@+id/button_search"-->
+    <!--        style="@style/BigButtonsSlyle"-->
+    <!--        android:text="@string/search"-->
+    <!--        app:icon="@drawable/big_lupa" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/button_media"-->
+    <!--        style="@style/BigButtonsSlyle"-->
+    <!--        android:text="@string/media"-->
+    <!--        app:icon="@drawable/mediateka" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/button_settings"-->
+    <!--        style="@style/BigButtonsSlyle"-->
+    <!--        android:text="@string/settings"-->
+    <!--        app:icon="@drawable/shesternya" />-->
