@@ -1,12 +1,11 @@
 package com.practicum.appplaylistmaker.domain.search
 
 import com.practicum.appplaylistmaker.domain.models.Track
+import kotlinx.coroutines.flow.Flow
 
 interface SearchInteractor {
 
-    fun searchTrack(trackName: String,
-                    onSuccess: (tracks: List<Track>) -> Unit,
-                    onFailure: () -> Unit)
+    suspend fun searchTrack(trackName: String): Flow<List<Track>?>
 
     fun clearTrackHistory()
     fun getTracksHistory(): List<Track>

@@ -3,11 +3,13 @@ package com.practicum.appplaylistmaker.ui.audioplayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -19,25 +21,24 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.dpToPx
 import com.practicum.appplaylistmaker.ui.audioplayer.view_model.AudioplayerViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.androidx.scope.ScopeActivity
 
 class AudioplayerActivity : AppCompatActivity() {
 
 
     private lateinit var musicTimer: TextView
     private lateinit var buttonPlayStop: ImageButton
-    private lateinit var handler: Handler
     private val viewModel: AudioplayerViewModel by viewModel()
+    private var timerJob: Job? = null
 
-    private val updateTimeRunnable = Runnable {
-        updateTime()
-    }
-
-    private fun updateTime() {
-        if (viewModel.getPlayerState().value != AudioplayerViewModel.AudioplayerState.STATE_PLAYING) {
-            return
+    private suspend fun updateTime() {
+        while (viewModel.getPlayerState().value == AudioplayerViewModel.AudioplayerState.STATE_PLAYING) {
+            musicTimer.text = viewModel.getTimeState()
+            delay(300)
         }
-        musicTimer.text = viewModel.getTimeState()
-        handler.postDelayed(updateTimeRunnable, 500)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +51,14 @@ class AudioplayerActivity : AppCompatActivity() {
             when (playerState) {
                 AudioplayerViewModel.AudioplayerState.STATE_PAUSED -> {
                     buttonPlayStop.setBackgroundResource(R.drawable.button_play)
-                    handler.removeCallbacks(updateTimeRunnable)
+                    timerJob?.cancel()
                 }
 
                 AudioplayerViewModel.AudioplayerState.STATE_PLAYING -> {
                     buttonPlayStop.setBackgroundResource(R.drawable.button_stop)
-                    handler.post(updateTimeRunnable)
+                    timerJob = lifecycleScope.launch {
+                        updateTime()
+                    }
                 }
 
                 AudioplayerViewModel.AudioplayerState.STATE_PREPARED -> {
@@ -82,7 +85,6 @@ class AudioplayerActivity : AppCompatActivity() {
         buttonPlayStop.setOnClickListener {
             playbackControl()
         }
-        handler = Handler(Looper.getMainLooper())
     }
 
     override fun onPause() {
@@ -92,7 +94,7 @@ class AudioplayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(updateTimeRunnable)
+        timerJob?.cancel()
     }
 
     private fun getTrack(): Track {
@@ -120,24 +122,8 @@ class AudioplayerActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.music_duration_value).text = track.getHumanReadableDuration()
     }
 
-//    private fun preparePlayer() {
-//        mediaPlayer.setDataSource(track.previewUrl)
-//        mediaPlayer.prepareAsync()
-//        mediaPlayer.setOnPreparedListener {
-//            buttonPlayStop.isEnabled = true
-//            playerState = STATE_PREPARED
-//        }
-//        mediaPlayer.setOnCompletionListener {
-//            buttonPlayStop.setBackgroundResource(R.drawable.button_play);
-//            musicTimer.text = MillisecondsToHumanReadable(0)
-//            handler.removeCallbacks(updateTimeRunnable)
-//            playerState = STATE_PREPARED
-//        }
-//    }
-
     private fun startPlayer() {
         viewModel.startPlayer()
-
     }
 
     private fun pausePlayer() {
