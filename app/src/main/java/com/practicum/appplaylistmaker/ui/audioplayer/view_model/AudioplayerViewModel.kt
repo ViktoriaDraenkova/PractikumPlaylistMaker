@@ -16,6 +16,7 @@ class AudioplayerViewModel(
 
     fun setTrack(track: Track) {
         pausePlayer()
+        playerState.value = AudioplayerState.STATE_DEFAULT
         audioplayerInteractor.prepareTrack(
             track,
             {
@@ -34,7 +35,7 @@ class AudioplayerViewModel(
         STATE_PAUSED("paused")
     }
 
-    private var playerState = MutableLiveData<AudioplayerState>(AudioplayerState.STATE_DEFAULT)
+    private var playerState = MutableLiveData(AudioplayerState.STATE_DEFAULT)
 
     fun getPlayerState(): LiveData<AudioplayerState> {
         return playerState
@@ -50,7 +51,7 @@ class AudioplayerViewModel(
         playerState.value = AudioplayerState.STATE_PAUSED
     }
 
-    suspend fun getTimeState(): String {
+    fun getTimeState(): String {
         return audioplayerInteractor.getTime()
     }
 }

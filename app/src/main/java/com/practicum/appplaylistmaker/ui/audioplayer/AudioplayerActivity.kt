@@ -64,12 +64,14 @@ class AudioplayerActivity : AppCompatActivity() {
                 AudioplayerViewModel.AudioplayerState.STATE_PREPARED -> {
                     buttonPlayStop.setBackgroundResource(R.drawable.button_play)
                     buttonPlayStop.isEnabled = true
+                    Log.d("AAAAAAAA", "STATE_PREPARED")
                     musicTimer.text = MillisecondsToHumanReadable(0)
 
                 }
 
                 AudioplayerViewModel.AudioplayerState.STATE_DEFAULT -> {
                     buttonPlayStop.isEnabled = false
+                    Log.d("AAAAAAAA", "STATE_DEFAULT")
                 }
             }
         }
