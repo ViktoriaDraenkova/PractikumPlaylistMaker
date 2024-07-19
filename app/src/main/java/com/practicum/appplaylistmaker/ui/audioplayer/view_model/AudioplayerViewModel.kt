@@ -1,10 +1,13 @@
 package com.practicum.appplaylistmaker.ui.audioplayer.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.appplaylistmaker.domain.audioplayer.AudioplayerInteractor
 import com.practicum.appplaylistmaker.domain.models.Track
+import kotlinx.coroutines.launch
 
 class AudioplayerViewModel(
 
@@ -13,6 +16,7 @@ class AudioplayerViewModel(
 
     fun setTrack(track: Track) {
         pausePlayer()
+        playerState.value = AudioplayerState.STATE_DEFAULT
         audioplayerInteractor.prepareTrack(
             track,
             {
@@ -31,7 +35,7 @@ class AudioplayerViewModel(
         STATE_PAUSED("paused")
     }
 
-    private var playerState = MutableLiveData<AudioplayerState>(AudioplayerState.STATE_DEFAULT)
+    private var playerState = MutableLiveData(AudioplayerState.STATE_DEFAULT)
 
     fun getPlayerState(): LiveData<AudioplayerState> {
         return playerState
@@ -49,6 +53,5 @@ class AudioplayerViewModel(
 
     fun getTimeState(): String {
         return audioplayerInteractor.getTime()
-
     }
 }

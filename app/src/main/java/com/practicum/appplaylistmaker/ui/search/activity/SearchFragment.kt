@@ -18,6 +18,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.practicum.appplaylistmaker.CLICK_DEBOUNCE_DELAY
@@ -27,6 +28,9 @@ import com.practicum.appplaylistmaker.databinding.FragmentSearchBinding
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity
 import com.practicum.appplaylistmaker.ui.search.view_model.SearchViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -34,12 +38,10 @@ class SearchFragment : Fragment() {
     companion object {
         const val TEXT_VALUE = "TEXT_VALUE"
         const val AMOUNT_DEF = ""
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
     private lateinit var binding: FragmentSearchBinding
     private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
     private lateinit var mEditText: EditText
     private lateinit var mClearText: ImageButton
     private var textValue: String = AMOUNT_DEF
@@ -51,6 +53,7 @@ class SearchFragment : Fragment() {
     private lateinit var musicListView: View
     private val viewModel: SearchViewModel by viewModel()
 
+
     private val adapter = MusicAdapter {
         showTrack(it)
     }
@@ -58,7 +61,6 @@ class SearchFragment : Fragment() {
         showTrack(it)
     }
 
-    private val searchRunnable = Runnable { search() }
 
     private fun initViews() {
         mEditText = binding.Search
@@ -161,7 +163,7 @@ class SearchFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.trim().isNotEmpty()) {
-                    searchDebounce()
+                    viewModel.searchDebounce(s.toString())
                     mClearText.visibility = View.VISIBLE
                 } else {
                     if (viewModel.getTracksHistoryLiveData().value?.isEmpty() == false) {
@@ -175,8 +177,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun search() {
-        Log.d("AAAAAAAA", "ISCHU!!!!!!!")
-
         viewModel.search(mEditText.text.toString())
     }
 
@@ -184,15 +184,17 @@ class SearchFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
 
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
+
+
+
 
     private fun showTrack(it: Track) {
         if (clickDebounce()) {

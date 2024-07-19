@@ -118,19 +118,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/text_problem"
                     tools:ignore="MissingConstraints" />
 
-                <Button
-                    android:id="@+id/button_update2"
-                    style="@style/ButtonUpdate"
-                    android:text="обновить 2"
-                    app:layout_constraintTop_toBottomOf="@+id/button_update"
-                    tools:ignore="MissingConstraints" />
-
-                <Button
-                    android:id="@+id/button_update3"
-                    style="@style/ButtonUpdate"
-                    android:text="обновить 3"
-                    app:layout_constraintTop_toBottomOf="@+id/button_update2"
-                    tools:ignore="MissingConstraints" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
