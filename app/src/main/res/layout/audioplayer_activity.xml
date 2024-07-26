@@ -78,30 +78,30 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/button_play"
             android:backgroundTint="@drawable/enabled_disabled_selector"
-            android:contentDescription="@string/play_music"
             android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/music_author" />
+            app:layout_constraintTop_toBottomOf="@+id/music_author"
+            tools:ignore="SpeakableTextPresentCheck"/>
 
         <ImageButton
+            android:id="@+id/button_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="54dp"
-            android:background="@drawable/buttonheart"
-            android:contentDescription="@string/play_music"
+            android:background="@drawable/button_disliked"
             app:layout_constraintEnd_toEndOf="@+id/vertical_right_glideline"
-            app:layout_constraintTop_toBottomOf="@+id/music_author" />
+            app:layout_constraintTop_toBottomOf="@+id/music_author"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="54dp"
             android:background="@drawable/buttonsavetomusiclist"
-            android:contentDescription="@string/play_music"
             app:layout_constraintStart_toStartOf="@+id/vertical_left_glideline"
-            app:layout_constraintTop_toBottomOf="@+id/music_author" />
+            app:layout_constraintTop_toBottomOf="@+id/music_author"
+            tools:ignore="SpeakableTextPresentCheck"/>
 
         <TextView
             android:id="@+id/time_music"

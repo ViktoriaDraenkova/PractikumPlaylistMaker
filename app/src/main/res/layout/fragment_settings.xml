@@ -10,7 +10,7 @@
     android:paddingHorizontal="0dp"
     android:paddingBottom="28dp"
     android:textAllCaps="false"
-    tools:context=".ui.settings.activity.SettingsFragment">
+    tools:context=".ui.settings.fragment.SettingsFragment">
 
     <Toolbar
         android:id="@+id/back"

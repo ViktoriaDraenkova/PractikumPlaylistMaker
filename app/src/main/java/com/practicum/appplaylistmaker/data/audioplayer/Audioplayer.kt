@@ -10,6 +10,5 @@ interface Audioplayer {
         onPreparedListener: () -> Unit,
         onCompletionListener: () -> Unit
     )
-
     fun getTime(): String
 }

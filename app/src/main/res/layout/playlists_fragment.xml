@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/day_white_night_black"
     android:orientation="vertical"
-    tools:context="ui.media.activity.MediaFragment">
+    tools:context="ui.media.fragment.MediaFragment">
 
     <Button
         android:id="@+id/button_new_playlist"

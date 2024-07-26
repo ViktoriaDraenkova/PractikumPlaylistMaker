@@ -6,7 +6,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    tools:context="ui.search.activity.SearchFragment">
+    tools:context="ui.search.fragment.SearchFragment">
 
     <ImageView
         android:id="@+id/soundImage"

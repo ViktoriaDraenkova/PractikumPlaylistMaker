@@ -1,13 +1,10 @@
-package com.practicum.appplaylistmaker.ui.search.activity
+package com.practicum.appplaylistmaker.ui.search.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,8 +24,8 @@ import com.practicum.appplaylistmaker.R
 import com.practicum.appplaylistmaker.databinding.FragmentSearchBinding
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity
+import com.practicum.appplaylistmaker.ui.common.MusicAdapter
 import com.practicum.appplaylistmaker.ui.search.view_model.SearchViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -191,9 +188,6 @@ class SearchFragment : Fragment() {
         }
         return current
     }
-
-
-
 
 
     private fun showTrack(it: Track) {

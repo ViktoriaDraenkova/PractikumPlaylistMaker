@@ -1,206 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.search.activity.SearchFragment">
+    android:orientation="vertical"
+    android:textAllCaps="false"
+    tools:context=".ui.search.fragment.SearchFragment">
 
-    <LinearLayout
+    <Toolbar
+        android:id="@+id/back"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:textAllCaps="false">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:contentInsetStartWithNavigation="0dp"
+        android:title="@string/search"
+        android:titleTextAppearance="@style/ToolbarTitleText"
+        app:theme="@style/ToolbarColoredBackArrow"
+        tools:ignore="MissingConstraints" />
 
-        <Toolbar
-            android:id="@+id/back"
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <EditText
+            android:id="@+id/Search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:contentInsetStartWithNavigation="0dp"
-            android:title="@string/search"
-            android:titleTextAppearance="@style/ToolbarTitleText"
-            app:theme="@style/ToolbarColoredBackArrow"
-            tools:ignore="MissingConstraints" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:autofillHints=""
+            android:background="@drawable/shape"
+            android:drawableStart="@drawable/lupa"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/day_gray_night_black"
+            android:hint="@string/search"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="45"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingTop="8.5dp"
+            android:paddingBottom="7.5dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/day_gray_night_black"
+            android:textCursorDrawable="@drawable/cursor"
+            android:textSize="16sp"
+            tools:ignore="TouchTargetSizeCheck" />
 
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:orientation="horizontal"
+
+        <ImageButton
+            android:id="@+id/clearText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Clear"
+            android:padding="8dp"
+            android:src="@drawable/cross"
+            tools:ignore="TouchTargetSizeCheck" />
+    </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="140dp"
+        android:indeterminateTint="@color/purple_blue"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/no_internet_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="-24dp"
+            android:visibility="gone"
+            tools:ignore="MissingConstraints">
+            <!--  я не знаю как его центрировать нормально... Пробовала мне кажется уже всё... А жестко задавать отступ, кажется, не очень хороший тон -->
+
+            <ImageView
+                android:id="@+id/no_internet"
+                style="@style/StyleForImageInActivityWithAnyProblems"
+                android:background="@drawable/no_internet"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/text_problem"
+                style="@style/TexInActivityWithAnyProblems"
+                android:text="@string/no_internet"
+                app:layout_constraintTop_toBottomOf="@+id/no_internet"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/button_update"
+                style="@style/ButtonUpdate"
+                android:text="@string/update"
+                app:layout_constraintTop_toBottomOf="@+id/text_problem"
+                tools:ignore="MissingConstraints" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/no_music_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="-24dp"
+            android:visibility="gone"
             tools:ignore="MissingConstraints">
 
-            <EditText
-                android:id="@+id/Search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:autofillHints=""
-                android:background="@drawable/shape"
-                android:drawableStart="@drawable/lupa"
-                android:drawablePadding="8dp"
-                android:drawableTint="@color/day_gray_night_black"
-                android:hint="@string/search"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:maxLength="45"
-                android:maxLines="1"
-                android:paddingStart="12dp"
-                android:paddingTop="8.5dp"
-                android:paddingBottom="7.5dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="@color/day_gray_night_black"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textSize="16sp"
-                tools:ignore="TouchTargetSizeCheck" />
+            <ImageView
+                android:id="@+id/no_music"
+                style="@style/StyleForImageInActivityWithAnyProblems"
+                android:background="@drawable/no_music"
+                tools:ignore="MissingConstraints" />
 
+            <TextView
+                style="@style/TexInActivityWithAnyProblems"
+                android:text="@string/no_music"
+                app:layout_constraintTop_toBottomOf="@+id/no_music"
+                tools:ignore="MissingConstraints" />
 
-            <ImageButton
-                android:id="@+id/clearText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center"
-                android:layout_marginEnd="20dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="Clear"
-                android:padding="8dp"
-                android:src="@drawable/cross"
-                tools:ignore="TouchTargetSizeCheck" />
-        </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ProgressBar android:id="@+id/progressBar"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginTop="140dp"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/purple_blue"
-            android:visibility="gone"
-            />
-
-        <FrameLayout
-            android:id="@+id/contentContainer"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/music_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
-
+        <ScrollView
+            android:id="@+id/history_music_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/no_internet_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="-24dp"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints">
-                <!--  я не знаю как его центрировать нормально... Пробовала мне кажется уже всё... А жестко задавать отступ, кажется, не очень хороший тон -->
-
-                <ImageView
-                    android:id="@+id/no_internet"
-                    style="@style/StyleForImageInActivityWithAnyProblems"
-                    android:background="@drawable/no_internet"
-                    tools:ignore="MissingConstraints" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/text_problem"
-                    style="@style/TexInActivityWithAnyProblems"
-                    android:text="@string/no_internet"
-                    app:layout_constraintTop_toBottomOf="@+id/no_internet"
-                    tools:ignore="MissingConstraints" />
+                    android:id="@+id/text_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/ys_text_medium"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/you_search_it_later"
+                    android:textColor="@color/day_black_night_white"
+                    android:textSize="19sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/musicListHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_search" />
 
                 <Button
-                    android:id="@+id/button_update"
+                    android:id="@+id/button_clean"
                     style="@style/ButtonUpdate"
-                    android:text="@string/update"
-                    app:layout_constraintTop_toBottomOf="@+id/text_problem"
-                    tools:ignore="MissingConstraints" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/no_music_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="-24dp"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints">
-
-                <ImageView
-                    android:id="@+id/no_music"
-                    style="@style/StyleForImageInActivityWithAnyProblems"
-                    android:background="@drawable/no_music"
-                    tools:ignore="MissingConstraints" />
-
-                <TextView
-                    style="@style/TexInActivityWithAnyProblems"
-                    android:text="@string/no_music"
-                    app:layout_constraintTop_toBottomOf="@+id/no_music"
-                    tools:ignore="MissingConstraints" />
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:text="@string/clean_history"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/musicListHistory" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/music_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"/>
-
-            <ScrollView
-                android:id="@+id/history_music_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/text_search"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:fontFamily="@font/ys_text_medium"
-                        android:paddingTop="18dp"
-                        android:paddingBottom="12dp"
-                        android:text="@string/you_search_it_later"
-                        android:textColor="@color/day_black_night_white"
-                        android:textSize="19sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/musicListHistory"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_search" />
-
-                    <Button
-                        android:id="@+id/button_clean"
-                        style="@style/ButtonUpdate"
-                        android:layout_marginTop="24dp"
-                        android:gravity="center"
-                        android:text="@string/clean_history"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/musicListHistory" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </ScrollView>
-        </FrameLayout>
-
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </FrameLayout>
+</LinearLayout>
