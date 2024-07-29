@@ -71,13 +71,13 @@ class FavouriteTracksFragment : Fragment() {
         when (state) {
             is FavouritesTrackState.Content -> showContent(state.tracks)
             is FavouritesTrackState.Empty -> showPlaceholder()
+            else -> {}
         }
     }
 
     private fun showContent(tracks: List<Track>) {
         favouriteTracksList.visibility = View.VISIBLE
         placeholder.visibility = View.GONE
-
         adapter?.tracks = tracks
         adapter?.notifyDataSetChanged()
 

@@ -46,7 +46,9 @@
             android:fontFamily="@font/ys_text_regular"
             android:textColor="@color/day_gray_night_white"
             android:textSize="11sp"
-            tools:text="Исполнитель"
+            tools:text="The Beatles"
+            android:ellipsize="end"
+            android:ems="6"
             app:layout_constraintTop_toBottomOf="@id/soundName"
             app:layout_constraintStart_toStartOf="@id/soundName"
 

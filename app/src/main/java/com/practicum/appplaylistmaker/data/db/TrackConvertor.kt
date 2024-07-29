@@ -2,6 +2,7 @@ package com.practicum.appplaylistmaker.data.db
 
 import com.practicum.appplaylistmaker.data.dto.TrackDto
 import com.practicum.appplaylistmaker.domain.models.Track
+import java.util.Calendar
 
 class TrackConvertor {
 
@@ -30,7 +31,9 @@ class TrackConvertor {
             track.collectionName,
             track.primaryGenreName,
             track.country,
-            track.previewUrl
+            track.previewUrl,
+            Calendar.getInstance().timeInMillis
+
         )
     }
 
