@@ -1,4 +1,4 @@
-package com.practicum.appplaylistmaker.ui.search.activity
+package com.practicum.appplaylistmaker.ui.common
 
 import android.view.View
 import android.widget.ImageView

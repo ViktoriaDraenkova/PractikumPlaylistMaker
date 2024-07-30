@@ -6,10 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.domain.search.SearchInteractor
-import com.practicum.appplaylistmaker.ui.search.activity.SearchFragment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {

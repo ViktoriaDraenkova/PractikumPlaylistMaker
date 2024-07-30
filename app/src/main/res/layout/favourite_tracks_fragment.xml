@@ -1,39 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/day_white_night_black"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_new_playlist"
-        style="@style/ButtonUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/liked_music_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
+    <LinearLayout
+        android:id="@+id/no_favourite_tracks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <ImageView
-        android:id="@+id/imageProblems"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="46dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/no_music" />
+        <ImageView
+            android:id="@+id/imageProblems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="106dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/no_music" />
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="@font/ys_text_medium"
-        android:text="@string/mediateka_is_empty"
-        android:textAlignment="center"
-        android:textColor="@color/day_black_night_white"
-        android:textSize="19sp" />
-
-
-</LinearLayout>
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_text_medium"
+            android:text="@string/mediateka_is_empty"
+            android:textColor="@color/day_black_night_white"
+            android:textSize="19sp" />
+    </LinearLayout>
+</FrameLayout>

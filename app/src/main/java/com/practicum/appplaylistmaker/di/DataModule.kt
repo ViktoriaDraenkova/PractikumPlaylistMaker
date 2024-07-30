@@ -2,10 +2,12 @@ package com.practicum.appplaylistmaker.di
 
 import android.media.MediaPlayer
 import androidx.activity.ComponentActivity
+import androidx.room.Room
 import com.practicum.appplaylistmaker.PRACTICUM_EXAMPLE_PREFERENCES
 import com.practicum.appplaylistmaker.api.ITunesApi
 import com.practicum.appplaylistmaker.data.audioplayer.Audioplayer
 import com.practicum.appplaylistmaker.data.audioplayer.impl.AudioplayerImpl
+import com.practicum.appplaylistmaker.data.db.AppDatabase
 import com.practicum.appplaylistmaker.data.sharing.ExternalNavigation
 import com.practicum.appplaylistmaker.data.sharing.impl.ExternalNavigationImpl
 import org.koin.android.ext.koin.androidContext
@@ -22,6 +24,11 @@ val dataModule = module {
 
     single<Audioplayer>{
         AudioplayerImpl(get())
+    }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
     }
 
     single {

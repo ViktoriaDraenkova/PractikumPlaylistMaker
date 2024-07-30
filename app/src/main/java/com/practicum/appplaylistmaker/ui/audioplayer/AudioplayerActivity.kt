@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
 import com.practicum.appplaylistmaker.R
+import com.practicum.appplaylistmaker.databinding.AudioplayerActivityBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.dpToPx
@@ -28,7 +29,7 @@ import org.koin.androidx.scope.ScopeActivity
 
 class AudioplayerActivity : AppCompatActivity() {
 
-
+    private lateinit var binding: AudioplayerActivityBinding
     private lateinit var musicTimer: TextView
     private lateinit var buttonPlayStop: ImageButton
     private val viewModel: AudioplayerViewModel by viewModel()
@@ -43,8 +44,8 @@ class AudioplayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.audioplayer_activity)
+        binding = AudioplayerActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initTrack(getTrack())
 
         viewModel.getPlayerState().observe(this) { playerState ->
@@ -64,27 +65,47 @@ class AudioplayerActivity : AppCompatActivity() {
                 AudioplayerViewModel.AudioplayerState.STATE_PREPARED -> {
                     buttonPlayStop.setBackgroundResource(R.drawable.button_play)
                     buttonPlayStop.isEnabled = true
-                    Log.d("AAAAAAAA", "STATE_PREPARED")
                     musicTimer.text = MillisecondsToHumanReadable(0)
-
                 }
 
                 AudioplayerViewModel.AudioplayerState.STATE_DEFAULT -> {
                     buttonPlayStop.isEnabled = false
-                    Log.d("AAAAAAAA", "STATE_DEFAULT")
                 }
             }
         }
 
-        musicTimer = findViewById<TextView>(R.id.time_music)
+        viewModel.getTrackLikedState().observe(this) { trackLikeState ->
+            when (trackLikeState) {
+                AudioplayerViewModel.LikeState.STATE_LIKED -> {
+                    binding.buttonFavourite.setBackgroundResource(R.drawable.button_liked)
+                }
 
-        val buttonBack = findViewById<Toolbar>(R.id.back_to_list)
-        buttonBack.setNavigationOnClickListener {
-            finish()
+                AudioplayerViewModel.LikeState.STATE_DISLIKED -> {
+                    binding.buttonFavourite.setBackgroundResource(R.drawable.button_disliked)
+                }
+            }
         }
 
-        buttonPlayStop = findViewById(R.id.button_play_stop)
-        buttonPlayStop.setOnClickListener {
+        musicTimer = findViewById(R.id.time_music)
+
+        binding.backToList.setNavigationOnClickListener {
+            finish()
+        }
+        binding.buttonFavourite.setOnClickListener {
+
+            when (viewModel.getTrackLikedState().value) {
+                AudioplayerViewModel.LikeState.STATE_DISLIKED -> {
+                    viewModel.likeTrack(getTrack())
+                }
+                AudioplayerViewModel.LikeState.STATE_LIKED -> {
+                    viewModel.dislikeTrack(getTrack())
+                }
+
+                else -> {}
+            }
+        }
+        buttonPlayStop = binding.buttonPlayStop
+        binding.buttonPlayStop.setOnClickListener {
             playbackControl()
         }
     }
@@ -122,6 +143,8 @@ class AudioplayerActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.year_value).text = track.releaseDate.take(4)
         findViewById<TextView>(R.id.album_name_value).text = track.collectionName
         findViewById<TextView>(R.id.music_duration_value).text = track.getHumanReadableDuration()
+
+
     }
 
     private fun startPlayer() {
@@ -145,5 +168,4 @@ class AudioplayerActivity : AppCompatActivity() {
             else -> {}
         }
     }
-
 }

@@ -8,6 +8,7 @@
     <color name="text_grey">#AEAFB4</color>
     <color name="icon_color">#AEAFB4</color>
     <color name="day_gray_night_white">#AEAFB4</color>
+    <color name="day_dark_grey_night_white">#1A1B22</color>
     <color name="day_black_night_white">#000000</color>
     <color name="day_white_night_black">#FFFFFFFF</color>
     <color name="day_black_night_white_80">#50000000</color>

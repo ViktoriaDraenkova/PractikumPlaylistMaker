@@ -1,10 +1,11 @@
-package com.practicum.appplaylistmaker.ui.search.activity
+package com.practicum.appplaylistmaker.ui.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.appplaylistmaker.R
 import com.practicum.appplaylistmaker.domain.models.Track
+import com.practicum.appplaylistmaker.ui.search.fragment.TrackClickListener
 
 class MusicAdapter(
     private val clickListener: TrackClickListener
