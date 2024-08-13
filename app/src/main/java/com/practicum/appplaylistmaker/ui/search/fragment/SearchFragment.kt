@@ -115,7 +115,6 @@ class SearchFragment : Fragment() {
         }
 
         val buttonUpdate = view.findViewById<Button>(R.id.button_update)
-
         buttonUpdate.setOnClickListener {
             search()
         }

@@ -2,6 +2,7 @@ package com.practicum.appplaylistmaker
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -23,7 +24,22 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.newPlaylistFragment -> hideBottomNav()
+                else -> showBottomNav()
+            }
+        }
         binding.bottomNavigationView.setupWithNavController(navController)
     }
 
+    private fun showBottomNav() {
+        binding.bottomNavigationView.visibility = View.VISIBLE
+
+    }
+
+    private fun hideBottomNav() {
+        binding.bottomNavigationView.visibility = View.GONE
+
+    }
 }

@@ -1,41 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myCoordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/day_white_night_black"
-    android:orientation="vertical"
-    tools:context="ui.media.fragment.MediaFragment">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button_new_playlist"
-        style="@style/ButtonUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/new_playlist"
-        android:visibility="visible" />
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/day_white_night_black"
+        android:orientation="vertical"
+        tools:context="ui.media.fragment.PlaylistsFragment">
+
+        <Button
+            android:id="@+id/button_new_playlist"
+            style="@style/ButtonUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:text="@string/new_playlist" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp" />
+
+        <LinearLayout
+            android:id="@+id/part_with_problems"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+          >
+
+            <ImageView
+                android:id="@+id/imageProblems"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="46dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/no_music" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/ys_text_medium"
+                android:text="@string/no_playlist"
+                android:textAlignment="center"
+                android:textColor="@color/day_black_night_white"
+                android:textSize="19sp" />
 
 
-    <ImageView
-        android:id="@+id/imageProblems"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="46dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/no_music" />
-
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="@font/ys_text_medium"
-        android:text="@string/no_playlist"
-        android:textAlignment="center"
-        android:textColor="@color/day_black_night_white"
-        android:textSize="19sp" />
-
-
-</LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -9,10 +9,10 @@
         android:id="@+id/mediaFragment"
         android:name="com.practicum.appplaylistmaker.ui.media.fragment.MediaFragment"
         android:label="fragment_media"
-        tools:layout="@layout/fragment_media">
+        tools:layout="@layout/mediateka_fragment">
         <action
             android:id="@+id/action_mediaFragment_to_playlistFragment"
-            app:destination="@id/playlistFragment" />
+            app:destination="@id/playlistsFragment" />
         <action
             android:id="@+id/action_mediaFragment_to_favouriteTracksFragment"
             app:destination="@id/favouriteTracksFragment" />
@@ -32,9 +32,14 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/playlistFragment"
-        android:name="com.practicum.appplaylistmaker.ui.media.fragment.PlaylistFragment"
-        android:label="PlaylistFragment" />
+        android:id="@+id/playlistsFragment"
+        android:name="com.practicum.appplaylistmaker.ui.media.fragment.PlaylistsFragment"
+        android:label="PlaylistsFragment" >
+        <action
+            android:id="@+id/action_playlistFragment_to_newPlaylistFragment"
+            app:destination="@id/newPlaylistFragment"
+            app:popUpTo="@id/playlistsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favouriteTracksFragment"
         android:name="com.practicum.appplaylistmaker.ui.media.fragment.FavouriteTracksFragment"
@@ -44,5 +49,13 @@
         android:id="@+id/audioplayerActivity"
         android:name="com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity"
         android:label="audioplayer_activity"
-        tools:layout="@layout/audioplayer_activity" />
+        tools:layout="@layout/audioplayer_activity">
+
+    </activity>
+
+    <fragment
+        android:id="@+id/newPlaylistFragment"
+        android:name="com.practicum.appplaylistmaker.ui.new_playlist.fragment.NewPlaylistFragment"
+        android:label="new_playlist_fragment"
+        tools:layout="@layout/new_playlist_fragment" />
 </navigation>

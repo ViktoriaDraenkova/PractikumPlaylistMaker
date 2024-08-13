@@ -1,27 +1,30 @@
 package com.practicum.appplaylistmaker.ui.audioplayer.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.appplaylistmaker.domain.audioplayer.AudioplayerInteractor
-import com.practicum.appplaylistmaker.domain.db.FavouritesInteractor
+import com.practicum.appplaylistmaker.domain.favourites.FavouritesInteractor
+import com.practicum.appplaylistmaker.domain.models.Playlist
 import com.practicum.appplaylistmaker.domain.models.Track
+import com.practicum.appplaylistmaker.domain.playlist.PlaylistInteractor
 import kotlinx.coroutines.launch
 
 class AudioplayerViewModel(
     private val audioplayerInteractor: AudioplayerInteractor,
     private val favouritesInteractor: FavouritesInteractor,
+    private val playlistInteractor: PlaylistInteractor,
 ) : ViewModel() {
 
     fun setTrack(track: Track) {
         pausePlayer()
         playerState.value = AudioplayerState.STATE_DEFAULT
         viewModelScope.launch {
-            if(favouritesInteractor.getInfoAboutLikedOrNot(track)){
+            if (favouritesInteractor.getInfoAboutLikedOrNot(track)) {
                 trackLikeState.value = LikeState.STATE_LIKED
-            }
-            else trackLikeState.value = LikeState.STATE_DISLIKED
+            } else trackLikeState.value = LikeState.STATE_DISLIKED
 
         }
 
@@ -82,10 +85,29 @@ class AudioplayerViewModel(
         }
     }
 
+    fun fillPlaylistData() {
+        viewModelScope.launch {
+            playlistInteractor.getPlaylist().collect { playlists ->
+                playlistsLiveData.value = playlists
+            }
+        }
+    }
+
     fun dislikeTrack(track: Track) {
         viewModelScope.launch {
             favouritesInteractor.deleteTrackFromDB(track)
             trackLikeState.value = LikeState.STATE_DISLIKED
+        }
+    }
+
+    private val playlistsLiveData = MutableLiveData<List<Playlist>>()
+    fun getObservablePlaylists(): LiveData<List<Playlist>> = playlistsLiveData
+
+
+    fun insertTrackToPlaylist(track: Track, playlistId: Long) {
+        Log.d("viewModel", "Inserting track $track to playlist $playlistId")
+        viewModelScope.launch {
+            playlistInteractor.insertTrackToPlaylist(track, playlistId)
         }
     }
 }

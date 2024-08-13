@@ -31,6 +31,13 @@
     <string name="no_playlist">Вы не создали\nни одного плейлиста</string>
     <string name="favourite_tracks">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
+    <string name="name_required">Название*</string>
+    <string name="discription">Описание</string>
+    <string name="create">Создать</string>
+    <string name="add_to_playlist">Добавить в плейлист</string>
+
+
+
 
 
 

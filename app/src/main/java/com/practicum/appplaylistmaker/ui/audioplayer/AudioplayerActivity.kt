@@ -1,31 +1,35 @@
 package com.practicum.appplaylistmaker.ui.audioplayer
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toolbar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.MillisecondsToHumanReadable
 import com.practicum.appplaylistmaker.R
 import com.practicum.appplaylistmaker.databinding.AudioplayerActivityBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.dpToPx
 import com.practicum.appplaylistmaker.ui.audioplayer.view_model.AudioplayerViewModel
+import com.practicum.appplaylistmaker.ui.common.LittlePlaylistAdapter
+import com.practicum.appplaylistmaker.ui.media.PlaylistClickListener
+import com.practicum.appplaylistmaker.ui.new_playlist.fragment.NewPlaylistFragment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.androidx.scope.ScopeActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AudioplayerActivity : AppCompatActivity() {
 
@@ -34,19 +38,67 @@ class AudioplayerActivity : AppCompatActivity() {
     private lateinit var buttonPlayStop: ImageButton
     private val viewModel: AudioplayerViewModel by viewModel()
     private var timerJob: Job? = null
+    private lateinit var currentTrack: Track
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
-    private suspend fun updateTime() {
-        while (viewModel.getPlayerState().value == AudioplayerViewModel.AudioplayerState.STATE_PLAYING) {
-            musicTimer.text = viewModel.getTimeState()
-            delay(300)
+    private val adapter =
+        LittlePlaylistAdapter { playlist ->
+            if (playlist.tracks.contains(currentTrack)) {
+                showToast("Уже есть!")
+            } else {
+                addToPlaylist(currentTrack, playlist.playlistId)
+                showToast("Добавили!")
+                viewModel.fillPlaylistData()
+            }
         }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun addToPlaylist(track: Track, playlistId: Long) {
+        viewModel.insertTrackToPlaylist(track, playlistId)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AudioplayerActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initTrack(getTrack())
+        currentTrack = getTrack()
+        initTrack(currentTrack)
+
+        val bottomSheetContainer = binding.playlistsBottomSheet
+
+        val overlay = binding.overlay
+
+        viewModel.getObservablePlaylists().observe(this) { playlists ->
+            Log.d("playlists", playlists.toString())
+
+            adapter.playlists = playlists
+            adapter.notifyDataSetChanged()
+        }
+
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay.visibility = View.GONE
+                    }
+
+                    else -> {
+                        overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
 
         viewModel.getPlayerState().observe(this) { playerState ->
             when (playerState) {
@@ -97,6 +149,7 @@ class AudioplayerActivity : AppCompatActivity() {
                 AudioplayerViewModel.LikeState.STATE_DISLIKED -> {
                     viewModel.likeTrack(getTrack())
                 }
+
                 AudioplayerViewModel.LikeState.STATE_LIKED -> {
                     viewModel.dislikeTrack(getTrack())
                 }
@@ -108,6 +161,38 @@ class AudioplayerActivity : AppCompatActivity() {
         binding.buttonPlayStop.setOnClickListener {
             playbackControl()
         }
+
+        binding.addToPlaylist.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+            viewModel.fillPlaylistData()
+        }
+
+
+        binding.layoutPersistentBottomSheet.buttonNewPlaylist.setOnClickListener {
+            openNewPlaylistFragment()
+        }
+
+        val recyclerPlaylistView = binding.layoutPersistentBottomSheet.recyclerView
+        recyclerPlaylistView?.layoutManager = GridLayoutManager(this, 1)
+        if (recyclerPlaylistView != null) {
+            recyclerPlaylistView.adapter = adapter
+        }
+
+        viewModel.fillPlaylistData()
+
+
+    }
+
+    private fun openNewPlaylistFragment() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(
+            R.id.audioplayer_nav_host_fragment,
+            NewPlaylistFragment.newInstance(true)
+        )
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+        binding.scrollviewWithTrack.visibility = View.GONE
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
     override fun onPause() {
@@ -118,6 +203,11 @@ class AudioplayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         timerJob?.cancel()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Log.d("BackPress", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     }
 
     private fun getTrack(): Track {
@@ -166,6 +256,13 @@ class AudioplayerActivity : AppCompatActivity() {
             }
 
             else -> {}
+        }
+    }
+
+    private suspend fun updateTime() {
+        while (viewModel.getPlayerState().value == AudioplayerViewModel.AudioplayerState.STATE_PLAYING) {
+            musicTimer.text = viewModel.getTimeState()
+            delay(300)
         }
     }
 }

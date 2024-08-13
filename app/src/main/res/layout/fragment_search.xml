@@ -36,7 +36,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
             android:autofillHints=""
-            android:background="@drawable/shape"
+            android:background="@drawable/rounded_corners_8dp_grey"
             android:drawableStart="@drawable/lupa"
             android:drawablePadding="8dp"
             android:drawableTint="@color/day_gray_night_black"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="-24dp"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:ignore="MissingConstraints">
             <!--  я не знаю как его центрировать нормально... Пробовала мне кажется уже всё... А жестко задавать отступ, кажется, не очень хороший тон -->
 
@@ -110,6 +110,7 @@
             <Button
                 android:id="@+id/button_update"
                 style="@style/ButtonUpdate"
+                android:layout_marginTop="19dp"
                 android:text="@string/update"
                 app:layout_constraintTop_toBottomOf="@+id/text_problem"
                 tools:ignore="MissingConstraints" />

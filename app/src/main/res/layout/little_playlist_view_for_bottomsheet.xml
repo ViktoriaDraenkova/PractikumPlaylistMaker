@@ -1,0 +1,56 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="61dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    tools:context="ui.search.fragment.SearchFragment">
+
+    <ImageView
+        android:id="@+id/playlist_little_image"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/corner_for_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/playlist_name_little"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:ems="16"
+        android:fontFamily="@font/ys_text_regular"
+        android:maxLines="1"
+        android:textColor="@color/day_black_night_white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/playlist_little_image"
+        app:layout_constraintTop_toTopOf="@+id/playlist_little_image"
+        tools:text="Playlist Name" />
+
+
+    <TextView
+        android:id="@+id/tracks_count_little"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:fontFamily="@font/ys_text_regular"
+        android:textColor="@color/day_gray_night_white"
+        android:textSize="11sp"
+        tools:text="124 tracks"
+        android:ellipsize="end"
+        android:ems="6"
+        app:layout_constraintTop_toBottomOf="@id/playlist_name_little"
+        app:layout_constraintStart_toStartOf="@id/playlist_name_little"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,7 +27,11 @@ val dataModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "databaseTracks.db")
+            .build()
+    }
+    single {
+        Room.databaseBuilder(androidContext(), com.practicum.appplaylistmaker.data.db_for_playlists.AppDatabase::class.java, "databasePlaylists.db")
             .build()
     }
 

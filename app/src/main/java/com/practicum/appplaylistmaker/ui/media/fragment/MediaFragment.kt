@@ -7,18 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.databinding.FragmentMediaBinding
+import com.practicum.appplaylistmaker.databinding.MediatekaFragmentBinding
 import com.practicum.appplaylistmaker.ui.media.ViewPager2Adapter
 
 class MediaFragment : Fragment()  {
 
-    private lateinit var binding: FragmentMediaBinding
+    private lateinit var binding: MediatekaFragmentBinding
     private lateinit var tabMediator:TabLayoutMediator
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentMediaBinding.inflate(layoutInflater)
+        binding = MediatekaFragmentBinding.inflate(layoutInflater)
         return binding.root
     }
 
