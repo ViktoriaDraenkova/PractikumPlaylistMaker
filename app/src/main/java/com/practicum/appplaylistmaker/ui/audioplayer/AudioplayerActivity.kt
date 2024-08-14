@@ -40,15 +40,19 @@ class AudioplayerActivity : AppCompatActivity() {
     private var timerJob: Job? = null
     private lateinit var currentTrack: Track
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var bottomSheetContainer:LinearLayout
 
     private val adapter =
         LittlePlaylistAdapter { playlist ->
             if (playlist.tracks.contains(currentTrack)) {
-                showToast("Уже есть!")
+                showToast("Трек уже добавлен в плейлист ${playlist.playlistName}")
             } else {
                 addToPlaylist(currentTrack, playlist.playlistId)
-                showToast("Добавили!")
+                showToast("Добавлено в плейлист ${playlist.playlistName} ")
                 viewModel.fillPlaylistData()
+                bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+                    state = BottomSheetBehavior.STATE_HIDDEN
+                }
             }
         }
 
@@ -67,7 +71,7 @@ class AudioplayerActivity : AppCompatActivity() {
         currentTrack = getTrack()
         initTrack(currentTrack)
 
-        val bottomSheetContainer = binding.playlistsBottomSheet
+        bottomSheetContainer = binding.playlistsBottomSheet
 
         val overlay = binding.overlay
 
