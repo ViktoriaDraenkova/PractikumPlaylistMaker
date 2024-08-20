@@ -7,13 +7,26 @@ import com.practicum.appplaylistmaker.domain.playlist.PlaylistInteractor
 import com.practicum.appplaylistmaker.domain.playlist.PlaylistRepository
 import kotlinx.coroutines.flow.Flow
 
-class PlaylistInteractorImpl(val playlistRepository: PlaylistRepository):PlaylistInteractor {
+class PlaylistInteractorImpl(val playlistRepository: PlaylistRepository) : PlaylistInteractor {
     override suspend fun addPlaylist(playlist: Playlist) {
         playlistRepository.addPlaylist(playlist)
     }
-    override suspend fun insertTrackToPlaylist(track: Track, playlistId: Long){
+
+    override suspend fun insertTrackToPlaylist(track: Track, playlistId: Long) {
         Log.d("interactor", "Inserting track $track to playlist $playlistId")
         playlistRepository.insertTrackToPlaylist(track, playlistId)
+    }
+
+    override suspend fun deleteTrack(playlistId: Long, trackId: Long) {
+        playlistRepository.deleteTrack(playlistId, trackId)
+    }
+
+    override suspend fun deletePlaylist(playlistId: Long) {
+        playlistRepository.deletePlaylist(playlistId)
+    }
+
+    override suspend fun redactPlaylist(playlist: Playlist) {
+        playlistRepository.redactPlaylist(playlist)
     }
 
     override fun getPlaylist(): Flow<List<Playlist>> {

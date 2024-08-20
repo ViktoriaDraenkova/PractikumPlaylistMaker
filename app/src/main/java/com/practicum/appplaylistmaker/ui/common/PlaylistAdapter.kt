@@ -1,13 +1,13 @@
 package com.practicum.appplaylistmaker.ui.common
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.appplaylistmaker.R
 import com.practicum.appplaylistmaker.domain.models.Playlist
+import com.practicum.appplaylistmaker.ui.media.PlaylistClickListener
 
-class PlaylistAdapter() : RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistAdapter(private val clickListener: PlaylistClickListener) : RecyclerView.Adapter<PlaylistViewHolder>() {
 
     var playlists = emptyList<Playlist>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
@@ -23,6 +23,6 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistViewHolder>() {
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         holder.bind(playlists[position])
-//        holder.itemView.setOnClickListener{clickListener.onPlaylistClick(playlists[position])}
+        holder.itemView.setOnClickListener{clickListener.onPlaylistClick(playlists[position])}
     }
 }

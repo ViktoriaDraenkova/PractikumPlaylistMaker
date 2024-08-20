@@ -1,19 +1,23 @@
 package com.practicum.appplaylistmaker.ui.media.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.R
 import com.practicum.appplaylistmaker.databinding.PlaylistsFragmentBinding
 import com.practicum.appplaylistmaker.domain.models.Playlist
 import com.practicum.appplaylistmaker.getNavigationResultLiveData
+import com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity
 import com.practicum.appplaylistmaker.ui.common.PlaylistAdapter
 import com.practicum.appplaylistmaker.ui.media.view_model.PlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +26,7 @@ class PlaylistsFragment : Fragment() {
 
     private var binding: PlaylistsFragmentBinding? = null
     private val viewModel: PlaylistsViewModel by viewModel()
-    private val adapter = PlaylistAdapter()
+    private val adapter = PlaylistAdapter { showPlaylist(it) }
 
 
     override fun onCreateView(
@@ -39,11 +43,10 @@ class PlaylistsFragment : Fragment() {
         viewModel.getObservablePlaylists().observe(viewLifecycleOwner) { playlists ->
             Log.d("playlists", playlists.toString())
 
-            if (playlists.isEmpty()){
-                binding?.partWithProblems?.visibility =View.VISIBLE
+            if (playlists.isEmpty()) {
+                binding?.partWithProblems?.visibility = View.VISIBLE
                 binding?.recyclerView?.visibility = View.GONE
-            }
-            else{
+            } else {
                 binding?.partWithProblems?.visibility = View.GONE
                 binding?.recyclerView?.visibility = View.VISIBLE
                 adapter.playlists = playlists
@@ -54,7 +57,8 @@ class PlaylistsFragment : Fragment() {
         }
 
         val result = getNavigationResultLiveData<String>("newPlaylistKey")
-        result?.observe(viewLifecycleOwner){ newPlaylist -> Log.d("add", "NewPlaylist: $newPlaylist")
+        result?.observe(viewLifecycleOwner) { newPlaylist ->
+            Log.d("add", "NewPlaylist: $newPlaylist")
             showSnackbar(Gson().fromJson(newPlaylist, Playlist::class.java).playlistName)
         }
 
@@ -70,6 +74,7 @@ class PlaylistsFragment : Fragment() {
 
         viewModel.fillData()
 
+
     }
 
 
@@ -79,13 +84,23 @@ class PlaylistsFragment : Fragment() {
 
     private fun showSnackbar(playlistName: String) {
         // Create and show the snackbar
-        val snackbar = Snackbar.make(binding?.myCoordinatorLayout as View, "This is $playlistName a snackbar", Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(
+            binding?.myCoordinatorLayout as View,
+            "This is $playlistName a snackbar",
+            Snackbar.LENGTH_LONG
+        )
         snackbar.show()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    private fun showPlaylist(it: Playlist) {
+        val navController = findNavController()
+        val bundle = bundleOf("playlist" to Gson().toJson(it))
+        navController.navigate(R.id.fragmentPlaylistOpened, bundle)
     }
 
 

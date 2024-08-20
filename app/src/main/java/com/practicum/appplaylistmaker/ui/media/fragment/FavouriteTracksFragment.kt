@@ -46,9 +46,9 @@ class FavouriteTracksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = MusicAdapter { track ->
+        adapter = MusicAdapter({ track ->
             showTrack(track)
-        }
+        })
         favouriteTracksList = binding.likedMusicList
         favouriteTracksList.adapter = adapter
         favouriteTracksList.layoutManager =

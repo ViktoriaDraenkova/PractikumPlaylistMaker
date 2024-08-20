@@ -14,6 +14,10 @@ class NewPlaylistViewModel(val playlistInteractor: PlaylistInteractor) : ViewMod
         }
     }
 
-
+    fun editPlaylist(playlist: Playlist){
+        viewModelScope.launch {
+            playlistInteractor.redactPlaylist(playlist)
+        }
+    }
 
 }

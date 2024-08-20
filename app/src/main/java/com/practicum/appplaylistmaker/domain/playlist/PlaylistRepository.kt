@@ -12,4 +12,9 @@ interface PlaylistRepository {
 
     suspend fun insertTrackToPlaylist(track: Track, playlistId: Long)
 
+    suspend fun deleteTrack(playlistId: Long, trackId:Long )
+    suspend fun redactPlaylist(playlist: Playlist)
+
+    suspend fun deletePlaylist(playlistId: Long)
+
 }

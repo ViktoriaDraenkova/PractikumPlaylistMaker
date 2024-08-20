@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,23 +15,18 @@ import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.databinding.FragmentSearchBinding
 import com.practicum.appplaylistmaker.databinding.NewPlaylistFragmentBinding
 import com.practicum.appplaylistmaker.domain.models.Playlist
-import com.practicum.appplaylistmaker.dpToPx
 import com.practicum.appplaylistmaker.setNavigationResult
 import com.practicum.appplaylistmaker.ui.new_playlist.view_model.NewPlaylistViewModel
+import com.practicum.appplaylistmaker.ui.playlist.OpenedPlaylistsFragmentArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -43,6 +37,8 @@ class NewPlaylistFragment : Fragment() {
     private lateinit var binding: NewPlaylistFragmentBinding
     private val viewModel: NewPlaylistViewModel by viewModel()
     private var playlistImgUri: Uri? = null
+    private val args: NewPlaylistFragmentArgs by navArgs()
+    private var editingPlaylist: Playlist? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +51,12 @@ class NewPlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val editingPlaylistJson = args.playlist
+        if (!editingPlaylistJson.isNullOrEmpty()) {
+            editingPlaylist = Gson().fromJson(editingPlaylistJson, Playlist::class.java)
+            editMode()
+        }
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -97,24 +99,47 @@ class NewPlaylistFragment : Fragment() {
             if (playlistImgUri != null) {
                 imgPath = saveImageToPrivateStorage(playlistImgUri!!, timeForImgNameIndicator)
             }
-            val newPlaylist = Playlist(
-                playlistName = binding.etPlaylistTitle.text.toString(),
-                description = binding.etPlaylistDiscription.text.toString(),
-                imagePath = imgPath,
-                tracksCountInPlaylist = 0,
-            )
-            viewModel.addPlaylist(
-                newPlaylist
-            )
+
+            var newPlaylist: Playlist? = null
+
+            if (editingPlaylist != null) {
+                editingPlaylist!!.playlistName = binding.etPlaylistTitle.text.toString()
+                editingPlaylist!!.description = binding.etPlaylistDiscription.text.toString()
+                editingPlaylist!!.imagePath = imgPath
+
+                viewModel.editPlaylist(editingPlaylist!!)
+
+                newPlaylist = editingPlaylist
+            } else {
+                newPlaylist = Playlist(
+                    playlistName = binding.etPlaylistTitle.text.toString(),
+                    description = binding.etPlaylistDiscription.text.toString(),
+                    imagePath = imgPath,
+                    tracksCountInPlaylist = 0,
+                )
+                viewModel.addPlaylist(
+                    newPlaylist
+                )
+            }
             if(!isFromAudioplayerActivity) {
                 setNavigationResult(Gson().toJson(newPlaylist), "newPlaylistKey")
             }
+
             navigateBack()
         }
 
         addButtonBackClickAction()
     }
 
+    private fun editMode() {
+        binding.back.title = "Редактировать"
+        binding.buttonCreatePlaylist.text = "Сохранить"
+        if (editingPlaylist?.imagePath?.isNotEmpty() == true) {
+            binding.imageForPlaylist.setImageURI(Uri.parse(editingPlaylist?.imagePath))
+        }
+        binding.etPlaylistTitle.setText(editingPlaylist?.playlistName)
+        binding.etPlaylistDiscription.setText(editingPlaylist?.description)
+    }
 
     private fun saveImageToPrivateStorage(uri: Uri, fileName: String): String {
         val filePath =
@@ -140,8 +165,6 @@ class NewPlaylistFragment : Fragment() {
         } else {
             findNavController().popBackStack()
         }
-
-
     }
 
     private fun checkDataForDialog() {
