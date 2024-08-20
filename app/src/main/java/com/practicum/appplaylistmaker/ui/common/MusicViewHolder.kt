@@ -15,7 +15,7 @@ import com.practicum.appplaylistmaker.dpToPx
 
 class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val soundAuthor: TextView
-    private val soundName: TextView
+     val soundName: TextView
     private val soundDuration: TextView
     private val soundImage: ImageView
 

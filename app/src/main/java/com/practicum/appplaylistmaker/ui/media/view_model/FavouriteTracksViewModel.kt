@@ -1,11 +1,10 @@
 package com.practicum.appplaylistmaker.ui.media.view_model
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.appplaylistmaker.domain.db.FavouritesInteractor
+import com.practicum.appplaylistmaker.domain.favourites.FavouritesInteractor
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.ui.media.FavouritesTrackState
 import kotlinx.coroutines.launch

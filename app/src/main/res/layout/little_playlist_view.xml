@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_marginHorizontal="4dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    tools:ignore="SpeakableTextPresentCheck">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/day_white_night_black"
+        android:elevation="0dp">
+
+        <com.practicum.appplaylistmaker.SquareImageView
+            android:id="@+id/playlistImageBig"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/playlist_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:ems="10"
+        android:maxLines="1"
+        android:text="aaaaaaaaa"
+        android:textColor="@color/day_black_night_white" />
+
+    <TextView
+        android:id="@+id/tracks_count_in_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="aaaaaaaaa"
+        android:textColor="@color/day_black_night_white" />
+</LinearLayout>

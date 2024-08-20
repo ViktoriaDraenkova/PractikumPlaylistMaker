@@ -2,9 +2,8 @@ package com.practicum.appplaylistmaker.data.mediateka
 
 import com.practicum.appplaylistmaker.data.db.AppDatabase
 import com.practicum.appplaylistmaker.data.db.TrackConvertor
-import com.practicum.appplaylistmaker.data.db.TrackEntity
-import com.practicum.appplaylistmaker.data.dto.TrackDto
-import com.practicum.appplaylistmaker.domain.db.FavouritesRepository
+import com.practicum.appplaylistmaker.data.db.TrackEntityFavourite
+import com.practicum.appplaylistmaker.domain.favourites.FavouritesRepository
 import com.practicum.appplaylistmaker.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -18,8 +17,8 @@ class FavouritesRepositoryImpl(
         emit(convertFromTrackEntity(tracks).reversed())
     }
 
-    private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
-        return tracks.map { track -> trackConvertor.map(track) }
+    private fun convertFromTrackEntity(tracks: List<TrackEntityFavourite>): List<Track> {
+        return tracks.map { track -> trackConvertor.mapTrackEntityFavouriteToTrack(track) }
     }
 
     override suspend fun getInfoAboutLikedOrNot(track: Track): Boolean {
@@ -28,12 +27,13 @@ class FavouritesRepositoryImpl(
 
     override suspend fun saveFavouriteTrack(track: Track) {
         val trackDto = trackConvertor.mapTrackToTrackDto(track)
-        val trackEntity = trackConvertor.map(trackDto)
+        val trackEntity = trackConvertor.mapTrackDtoToTrackEntityFavourite(trackDto)
         database.trackDao().insertTrack(trackEntity)
     }
     override suspend fun deleteTrackFromDB(track: Track){
         val trackDto = trackConvertor.mapTrackToTrackDto(track)
-        val trackEntity=trackConvertor.map(trackDto)
+        val trackEntity=trackConvertor.mapTrackDtoToTrackEntityFavourite(trackDto)
         database.trackDao().delete(trackEntity)
     }
+
 }
