@@ -22,13 +22,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/soundName"
+        android:id="@+id/playlistName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="6dp"
         android:ellipsize="end"
-        android:ems="16"
+        android:ems="13"
         android:fontFamily="@font/ys_text_regular"
         android:maxLines="1"
         android:textColor="@color/day_black_night_white"
@@ -39,7 +39,7 @@
 
 
         <TextView
-            android:id="@+id/soundAuthor"
+            android:id="@+id/playlistDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -49,8 +49,8 @@
             tools:text="The Beatles"
             android:ellipsize="end"
             android:ems="6"
-            app:layout_constraintTop_toBottomOf="@id/soundName"
-            app:layout_constraintStart_toStartOf="@id/soundName"
+            app:layout_constraintTop_toBottomOf="@id/playlistName"
+            app:layout_constraintStart_toStartOf="@id/playlistName"
 
             />
 
@@ -63,9 +63,9 @@
             android:layout_marginBottom="5dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/circle_delimiter"
-            app:layout_constraintTop_toTopOf="@id/soundAuthor"
-            app:layout_constraintBottom_toBottomOf="@id/soundAuthor"
-            app:layout_constraintStart_toEndOf="@id/soundAuthor"
+            app:layout_constraintTop_toTopOf="@id/playlistDescription"
+            app:layout_constraintBottom_toBottomOf="@id/playlistDescription"
+            app:layout_constraintStart_toEndOf="@id/playlistDescription"
 
             />
 
@@ -78,7 +78,7 @@
             android:textColor="@color/day_gray_night_white"
             android:textSize="11sp"
             tools:text="Время"
-            app:layout_constraintTop_toBottomOf="@id/soundName"
+            app:layout_constraintTop_toBottomOf="@id/playlistName"
             app:layout_constraintStart_toEndOf="@id/sourceImage"
             />
 
@@ -95,7 +95,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,8 @@ import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.ui.search.fragment.TrackClickListener
 
 class MusicAdapter(
-    private val clickListener: TrackClickListener
+    private val clickListener: TrackClickListener,
+    private val longPressListener: TrackLongPressListener? = null
 ) : RecyclerView.Adapter<MusicViewHolder> () {
 
     var tracks = emptyList<Track>()
@@ -21,6 +22,7 @@ class MusicAdapter(
     override fun onBindViewHolder(holder: MusicViewHolder, position: Int) {
         holder.bind(tracks[position])
         holder.itemView.setOnClickListener { clickListener.onTrackClick(tracks[position]) }
+        holder.itemView.setOnLongClickListener { longPressListener?.onTrackLongPress(tracks[position]); true }
     }
 
     override fun getItemCount() = tracks.size

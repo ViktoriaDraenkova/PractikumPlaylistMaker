@@ -24,6 +24,16 @@ class PlaylistConverter {
         )
     }
 
+    fun mapPlaylistToPlaylistEntity(playlist: Playlist): PlaylistEntity {
+        return PlaylistEntity(
+            playlistId = playlist.playlistId,
+            playlistName = playlist.playlistName,
+            description = playlist.description,
+            imagePath = playlist.imagePath,
+            tracksCountInPlaylist = playlist.tracks.size,
+        )
+    }
+
     fun mapPlaylistToPlaylistDto(playlist: Playlist): PlaylistDto {
         return PlaylistDto(
             playlistName = playlist.playlistName,

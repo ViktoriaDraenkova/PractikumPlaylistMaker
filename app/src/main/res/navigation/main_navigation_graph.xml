@@ -39,6 +39,9 @@
             android:id="@+id/action_playlistFragment_to_newPlaylistFragment"
             app:destination="@id/newPlaylistFragment"
             app:popUpTo="@id/playlistsFragment" />
+        <action
+            android:id="@+id/action_playlistsFragment_to_fragmentPlaylistOpened"
+            app:destination="@id/fragmentPlaylistOpened" />
     </fragment>
     <fragment
         android:id="@+id/favouriteTracksFragment"
@@ -57,5 +60,21 @@
         android:id="@+id/newPlaylistFragment"
         android:name="com.practicum.appplaylistmaker.ui.new_playlist.fragment.NewPlaylistFragment"
         android:label="new_playlist_fragment"
-        tools:layout="@layout/new_playlist_fragment" />
+        tools:layout="@layout/new_playlist_fragment">
+        <argument
+            android:name="playlist"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentPlaylistOpened"
+        android:name="com.practicum.appplaylistmaker.ui.playlist.OpenedPlaylistsFragment"
+        android:label="fragment_playlist_opened"
+        tools:layout="@layout/fragment_playlist_opened">
+        <argument
+            android:name="playlist"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -1,0 +1,105 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playlist_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet_bg"
+    android:backgroundTint="@color/day_white_night_black"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    tools:context=".ui.playlist.OpenedPlaylistsFragment"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        tools:context="ui.search.fragment.SearchFragment">
+
+        <ImageView
+            android:id="@+id/playlist_little_image"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/corner_for_placeholder"
+            android:src="@drawable/placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/playlist_name_little"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:ems="16"
+            android:fontFamily="@font/ys_text_regular"
+            android:maxLines="1"
+            android:textColor="@color/day_black_night_white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/playlist_little_image"
+            app:layout_constraintTop_toTopOf="@+id/playlist_little_image"
+            tools:text="Playlist Name" />
+
+
+        <TextView
+            android:id="@+id/tracks_count_little"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:ems="6"
+            android:fontFamily="@font/ys_text_regular"
+            android:maxLines="1"
+            android:textColor="@color/day_gray_night_white"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@id/playlist_name_little"
+            app:layout_constraintTop_toBottomOf="@id/playlist_name_little"
+            tools:text="124 tracks" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/shareButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_text_regular"
+        android:paddingVertical="10dp"
+        android:paddingStart="16dp"
+        android:text="@string/share_playlist_"
+        android:textColor="@color/day_black_night_white"
+        android:textSize="16sp"
+        />
+
+    <TextView
+        android:id="@+id/redactPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_text_regular"
+        android:paddingVertical="10dp"
+        android:paddingStart="16dp"
+        android:text="@string/redact_info"
+        android:textColor="@color/day_black_night_white"
+        android:textSize="16sp"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/deletePlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_text_regular"
+        android:paddingVertical="10dp"
+        android:paddingStart="16dp"
+        android:text="@string/delete_playlist"
+        android:textColor="@color/day_black_night_white"
+        android:textSize="16sp" />
+</LinearLayout>

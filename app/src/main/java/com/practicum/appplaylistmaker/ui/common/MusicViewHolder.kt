@@ -20,8 +20,8 @@ class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val soundImage: ImageView
 
     init {
-        soundAuthor = itemView.findViewById(R.id.soundAuthor)
-        soundName = itemView.findViewById(R.id.soundName)
+        soundAuthor = itemView.findViewById(R.id.playlistDescription)
+        soundName = itemView.findViewById(R.id.playlistName)
         soundDuration = itemView.findViewById(R.id.soundDuration)
         soundImage = itemView.findViewById(R.id.soundImage)
     }

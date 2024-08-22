@@ -51,13 +51,12 @@ class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by viewModel()
 
 
-    private val adapter = MusicAdapter {
+    private val adapter = MusicAdapter({
         showTrack(it)
-    }
-    private val historyAdapter = MusicAdapter {
+    })
+    private val historyAdapter = MusicAdapter({
         showTrack(it)
-    }
-
+    })
 
     private fun initViews() {
         mEditText = binding.Search
