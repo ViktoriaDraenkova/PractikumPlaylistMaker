@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +54,10 @@ class NewPlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val editingPlaylistJson = args.playlist
+
+        Log.d("edit playlist", editingPlaylistJson.toString())
         if (!editingPlaylistJson.isNullOrEmpty()) {
+            Log.d("aaaa", "is not empty?????")
             editingPlaylist = Gson().fromJson(editingPlaylistJson, Playlist::class.java)
             editMode()
         }
@@ -98,6 +102,8 @@ class NewPlaylistFragment : Fragment() {
             val timeForImgNameIndicator = Calendar.getInstance().timeInMillis.toString()
             if (playlistImgUri != null) {
                 imgPath = saveImageToPrivateStorage(playlistImgUri!!, timeForImgNameIndicator)
+            } else if (editingPlaylist != null) {
+                imgPath = editingPlaylist!!.imagePath
             }
 
             var newPlaylist: Playlist? = null
@@ -136,9 +142,11 @@ class NewPlaylistFragment : Fragment() {
         binding.buttonCreatePlaylist.text = "Сохранить"
         if (editingPlaylist?.imagePath?.isNotEmpty() == true) {
             binding.imageForPlaylist.setImageURI(Uri.parse(editingPlaylist?.imagePath))
+            binding.imageForPlaylist.scaleType = ImageView.ScaleType.CENTER_CROP
         }
         binding.etPlaylistTitle.setText(editingPlaylist?.playlistName)
         binding.etPlaylistDiscription.setText(editingPlaylist?.description)
+        binding.buttonCreatePlaylist.isEnabled = true
     }
 
     private fun saveImageToPrivateStorage(uri: Uri, fileName: String): String {

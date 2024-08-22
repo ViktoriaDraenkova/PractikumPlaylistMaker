@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,17 +21,16 @@ import com.google.gson.Gson
 import com.practicum.appplaylistmaker.CLICK_DEBOUNCE_DELAY
 import com.practicum.appplaylistmaker.KEY_FOR_TRACK
 import com.practicum.appplaylistmaker.R
-import com.practicum.appplaylistmaker.ui.playlist.view_model.OpenedPlaylistViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.practicum.appplaylistmaker.databinding.FragmentPlaylistOpenedBinding
 import com.practicum.appplaylistmaker.domain.models.Playlist
 import com.practicum.appplaylistmaker.domain.models.Track
 import com.practicum.appplaylistmaker.getNavigationResultLiveData
 import com.practicum.appplaylistmaker.ui.audioplayer.AudioplayerActivity
 import com.practicum.appplaylistmaker.ui.common.MusicAdapter
+import com.practicum.appplaylistmaker.ui.playlist.view_model.OpenedPlaylistViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.File
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class OpenedPlaylistsFragment : Fragment() {
@@ -46,12 +44,12 @@ class OpenedPlaylistsFragment : Fragment() {
         },
         {
             val dialog = AlertDialog.Builder(requireContext())
-                .setTitle("Удалить трек")
-                .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
-                .setPositiveButton("Удалить") { _, _ ->
+                .setTitle(getString(R.string.delete_track))
+                .setMessage(getString(R.string.delete_track_agreement))
+                .setPositiveButton(getString(R.string.delete)) { _, _ ->
                     viewModel.deleteTrack(playlist.playlistId, it.trackId)
                 }
-                .setNegativeButton("Отмена") { _, _ ->
+                .setNegativeButton(getString(R.string.discard)) { _, _ ->
                 }
                 .create()
             dialog.show()
@@ -83,13 +81,14 @@ class OpenedPlaylistsFragment : Fragment() {
             playlist = Gson().fromJson(newPlaylist, Playlist::class.java)
             initPlaylist(playlist)
             initLittlePlaylistIcon(playlist)
+            bottomSheetBehavior.state=BottomSheetBehavior.STATE_HIDDEN
         }
 
         viewModel.getTracksLiveData().observe(viewLifecycleOwner){tracks ->
-            Log.d("Tracks update!", tracks.toString())
             adapter.tracks = tracks
             adapter.notifyDataSetChanged()
             setPlaylistSummary(tracks)
+            playlist.tracks = tracks
         }
 
         binding.back.setOnClickListener {
@@ -102,14 +101,14 @@ class OpenedPlaylistsFragment : Fragment() {
 
         binding.playlistLayoutPersistentBottomSheet.deletePlaylist.setOnClickListener {
             val dialog = AlertDialog.Builder(requireContext())
-                .setTitle("Удалить плейлист")
-                .setMessage("Хотите удалить плейлист?")
-                .setPositiveButton("Да") { _, _ ->
+                .setTitle(getString(R.string.delete_playlist))
+                .setMessage(getString(R.string.delete_playlist_agreement))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
                     viewModel.deletePlaylist(playlist.playlistId)
 
                     findNavController().popBackStack()
                 }
-                .setNegativeButton("Нет") { _, _ ->
+                .setNegativeButton(getString(R.string.no)) { _, _ ->
                 }
                 .create()
             dialog.show()
@@ -117,6 +116,9 @@ class OpenedPlaylistsFragment : Fragment() {
         }
 
         binding.playlistLayoutPersistentBottomSheet.shareButton.setOnClickListener {
+            if(playlist.tracks.isEmpty()){
+                bottomSheetBehavior.state=BottomSheetBehavior.STATE_HIDDEN
+            }
             sharePlaylist(playlist)
         }
 
@@ -166,7 +168,7 @@ class OpenedPlaylistsFragment : Fragment() {
         if (playlist.tracks.isEmpty()) {
             Toast.makeText(
                 requireContext(),
-                "В этом плейлисте нет списка треков, которым можно поделиться",
+                getString(R.string.no_tracks_to_share),
                 Toast.LENGTH_SHORT
             ).show()
         } else {
@@ -174,7 +176,7 @@ class OpenedPlaylistsFragment : Fragment() {
             intent.action = Intent.ACTION_SEND
             intent.putExtra(Intent.EXTRA_TEXT, createMessageToShare(playlist))
             intent.type = "text/plain"
-            startActivity(Intent.createChooser(intent, "Поделиться плейлистом"))
+            startActivity(Intent.createChooser(intent, getString(R.string.share_playlist)))
         }
     }
 
@@ -194,7 +196,7 @@ class OpenedPlaylistsFragment : Fragment() {
 
         binding.playlistLayoutPersistentBottomSheet.playlistNameLittle.text = playlist.playlistName
         binding.playlistLayoutPersistentBottomSheet.tracksCountLittle.text =
-            "${playlist.tracks.size} треков "
+            getString(R.string.tracks_count_template, playlist.tracks.size)
 
         if (playlist.imagePath.isNotEmpty()) {
             binding.playlistLayoutPersistentBottomSheet.playlistLittleImage.setImageURI(
@@ -211,7 +213,7 @@ class OpenedPlaylistsFragment : Fragment() {
         for (i in tracks) {
             dura += i.trackTime / (1000 * 60)
         }
-        binding.duration.text = "$dura минут • ${tracks.size} треков"
+        binding.duration.text = getString(R.string.playlist_summary_template, dura, tracks.size)
     }
 
     private fun initPlaylist(playlist: Playlist) {

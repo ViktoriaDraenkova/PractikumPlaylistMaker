@@ -6,5 +6,5 @@ data class Playlist (
     var description: String,
     var imagePath:String,
     val tracksCountInPlaylist: Int,
-    val tracks: List<Track> = emptyList(),
+    var tracks: List<Track> = emptyList(),
 )

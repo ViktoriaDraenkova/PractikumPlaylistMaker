@@ -33,7 +33,7 @@
         android:ellipsize="end"
         android:ems="10"
         android:maxLines="1"
-        android:text="aaaaaaaaa"
+        tools:text="aaaaaaaaa"
         android:textColor="@color/day_black_night_white" />
 
     <TextView
@@ -41,6 +41,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:text="aaaaaaaaa"
+        tools:text="aaaaaaaaa"
         android:textColor="@color/day_black_night_white" />
 </LinearLayout>

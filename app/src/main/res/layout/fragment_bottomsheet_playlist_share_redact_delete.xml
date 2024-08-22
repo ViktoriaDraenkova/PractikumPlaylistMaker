@@ -75,7 +75,7 @@
         android:fontFamily="@font/ys_text_regular"
         android:paddingVertical="10dp"
         android:paddingStart="16dp"
-        android:text="Поделиться"
+        android:text="@string/share_playlist_"
         android:textColor="@color/day_black_night_white"
         android:textSize="16sp"
         />
@@ -87,7 +87,7 @@
         android:fontFamily="@font/ys_text_regular"
         android:paddingVertical="10dp"
         android:paddingStart="16dp"
-        android:text="Редактировать информацию"
+        android:text="@string/redact_info"
         android:textColor="@color/day_black_night_white"
         android:textSize="16sp"
         tools:ignore="RtlSymmetry" />
@@ -99,7 +99,7 @@
         android:fontFamily="@font/ys_text_regular"
         android:paddingVertical="10dp"
         android:paddingStart="16dp"
-        android:text="Удалить плейлист"
+        android:text="@string/delete_playlist"
         android:textColor="@color/day_black_night_white"
         android:textSize="16sp" />
 </LinearLayout>
